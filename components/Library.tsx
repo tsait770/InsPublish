@@ -200,7 +200,7 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                         ) : (
                           <h3 
                             onClick={(e) => handleStartInlineEdit(e, proj)}
-                            className="text-[32px] sm:text-[38px] font-black tracking-tighter leading-[1.1] truncate cursor-text"
+                            className="text-[32px] sm:text-[38px] font-black tracking-tighter leading-[1.1] line-clamp-2 cursor-text"
                           >
                             {proj.name}
                           </h3>
@@ -248,15 +248,27 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                   </div>
                   
                   <div className="mt-auto pb-6">
+                    {/* 資訊標籤欄：包含時間戳與百分比數值 */}
                     <div className="flex justify-between items-end mb-4">
+                      {/* 左側：最後編輯時間 (Metadata) */}
                       <div className="text-[12px] font-black uppercase tracking-[0.3em] opacity-40 flex items-center">
                         <i className="fa-regular fa-clock mr-2.5"></i>
                         {proj.metadata || 'JUST NOW'}
                       </div>
-                      <div className="text-[12px] font-black tracking-tight opacity-50">{proj.progress}%</div>
+                      
+                      {/* 右側：進度百分比數字 */}
+                      <div className="text-[12px] font-black tracking-tight opacity-50">
+                        {proj.progress}%
+                      </div>
                     </div>
+
+                    {/* 進度條本體 */}
                     <div className="progress-bar-container bg-black/5">
-                      <div className="progress-fill bg-black/25" style={{ width: `${proj.progress}%` }} />
+                      {/* 動態填充層：寬度由 proj.progress 決定 */}
+                      <div 
+                        className="progress-fill bg-black/25" 
+                        style={{ width: `${proj.progress}%` }} 
+                      />
                     </div>
                   </div>
                 </div>

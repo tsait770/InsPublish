@@ -97,6 +97,23 @@
             box-shadow: 0 50px 100px rgba(0,0,0,0.7);
         }
 
+        /* 進度條外容器 */
+        .progress-bar-container {
+            height: 6px;                  /* 高度設定為 6px */
+            background: rgba(0, 0, 0, 0.05); /* 淺色背景軌道 */
+            border-radius: 3px;           /* 完美圓角 */
+            width: 100%;
+            overflow: hidden;             /* 確保填充層不超出圓角 */
+        }
+
+        /* 進度條填充層 */
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            /* 動態過渡：採用 Apple 風格的 cubic-bezier 曲線，讓進度跳動更優雅 */
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         /* 天氣看板樣式 */
         .weather-card {
             width: 100%;
