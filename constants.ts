@@ -11,11 +11,8 @@ export const COLORS = {
 
 // Precise match for the 22 colors in the user's screenshot (2 rows of 11)
 export const PROJECT_COLORS = [
-  /* Core Brand Palette (4 colors) */
-  '#FADE4B', '#FF6B2C', '#D4FF5F', '#B2A4FF',
-  /* Extended Palette */
-  '#9A8C35', '#AB522A', '#96AB48', '#6A767A', '#7A6956', '#7D8260', '#8C5E5E', '#4D5E46', '#828A94', '#5A6A70',
-  '#8C8276', '#5E5452', '#4A5582', '#708259', '#9E8D82', '#465E6B', '#9482AB', '#8C7256', '#56697A', '#7A8C70', '#8C7A5E'
+  '#9A8C35', '#AB522A', '#96AB48', '#B2A4FF', '#6A767A', '#7A6956', '#7D8260', '#8C5E5E', '#4D5E46', '#828A94',
+  '#8C8276', '#5E5452', '#4A5582', '#708259', '#9E8D82', '#465E6B', '#9482AB', '#8C7256', '#56697A', '#7A8C70'
 ];
 
 export const PROJECT_ICONS = [

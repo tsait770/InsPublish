@@ -121,12 +121,12 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
   };
 
   const deliverySteps = [
-    { title: '內容標準化與 AST 解析', en: 'CONTENT NORMALIZATION & AST PARSING', icon: 'fa-microchip' },
-    { title: '選取最佳封面資產', en: 'SELECTING OPTIMAL COVER ASSET', icon: 'fa-image' },
-    { title: '生成 DOCX 編輯母檔', en: 'GENERATING EDITORIAL DOCX ARTIFACT', icon: 'fa-file-lines' },
-    { title: '封裝 PDF 印刷級手稿', en: 'PACKAGING HIGH-FIDELITY PDF', icon: 'fa-file-pdf' },
-    { title: '構建 EPUB 3 出版規格電子書', en: 'BUILDING EPUB 3 STANDARDS E-BOOK', icon: 'fa-book' },
-    { title: '加密傳輸至出版商通道', en: 'ENCRYPTED DELIVERY TO PLATFORM API', icon: 'fa-paper-plane' }
+    { title: '內容標準化與 AST 解析', en: 'CONTENT NORMALIZATION & AST PARSING', icon: 'fa-microchip', detail: '將手稿轉換為出版級抽象語法樹，確保結構嚴謹。' },
+    { title: '選取最佳封面資產', en: 'SELECTING OPTIMAL COVER ASSET', icon: 'fa-image', detail: '自動匹配對應規格的封面，並進行最終合規性校驗。' },
+    { title: '生成 DOCX 編輯母檔', en: 'GENERATING EDITORIAL DOCX ARTIFACT', icon: 'fa-file-lines', detail: '構建包含完整樣式表與元數據的專業編輯文件。' },
+    { title: '封裝 PDF 印刷級手稿', en: 'PACKAGING HIGH-FIDELITY PDF', icon: 'fa-file-pdf', detail: '生成符合 PDF/X-1a 標準的印刷輸出稿件。' },
+    { title: '構建 EPUB 3 出版規格電子書', en: 'BUILDING EPUB 3 STANDARDS E-BOOK', icon: 'fa-book', detail: '封裝具備流式佈局與多媒體支援的電子出版物。' },
+    { title: '加密傳輸至出版商通道', en: 'ENCRYPTED DELIVERY TO PLATFORM API', icon: 'fa-paper-plane', detail: '透過安全加密通道將資產包投遞至目標發行平台。' }
   ];
 
   useEffect(() => {
@@ -688,6 +688,11 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
         <div className="space-y-6 max-w-xl mb-24">
            <h2 className="text-4xl font-black tracking-tighter text-white">{currentStep.title}</h2>
            <p className="text-[11px] text-blue-500 font-black uppercase tracking-[0.5em] opacity-80">{currentStep.en}</p>
+           <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-md mx-auto">{currentStep.detail}</p>
+        </div>
+        
+        <div className="w-full max-w-md bg-white/5 h-1.5 rounded-full overflow-hidden">
+           <div className="h-full bg-blue-600 transition-all duration-500" style={{ width: `${progressPercent}%` }} />
         </div>
       </div>
     );

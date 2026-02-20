@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { CheckCircle, XCircle, Landmark, UserCheck, ArrowUpRight, Globe, X, Barcode, PaperPlane } from 'lucide-react';
 import { SupportedLanguage, Project, SpineNodeId, PublishingSpineState } from '../types';
 import { INITIAL_SPINE_NODES } from '../constants';
 

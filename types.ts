@@ -114,6 +114,7 @@ export interface CoverAsset {
   timestamp: number;
   complianceReport?: string;
   isCompliant: boolean;
+  prompt?: string;
   history?: CoverAsset[];
 }
 
