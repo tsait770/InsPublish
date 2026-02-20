@@ -251,7 +251,7 @@ const PrivacyModal: React.FC<PrivacyModalProps> = ({ onClose }) => {
                      </h3>
                      <div className="pl-9 space-y-5 text-[15px] text-slate-400 leading-relaxed font-medium">
                         <p>感謝您選擇 InsPublish 作為您的創作夥伴。當您存取或使用本服務時，即視為您已理解並同意遵守本服務條款。我們由衷希望 InsPublish 能成為您文字旅程中值得信賴的基石。</p>
-                        <p>若您對於條款內容有任何疑慮，我們懇請您暫停使用服務，並與我們的客服團隊連蹟，我們將竭誠為您解答。</p>
+                        <p>若您對於條款內容有任何疑慮，我們懇請您暫停使用服務，並與我們的客服團隊聯繫，我們將竭誠為您解答。</p>
                      </div>
                   </div>
 
