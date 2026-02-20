@@ -173,23 +173,55 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
         </div>
         
         {/* Balanced Vertical Arrangement Stack */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="stack-container relative">
           {sortedProjects.map((proj, idx) => {
             // Priority: Use actual project color, else cycle through core palette
             const displayColor = proj.color || coreBrandColors[idx % coreBrandColors.length];
             return (
               <div 
                 key={proj.id} 
-                className="group relative bg-[#1C1C1E] rounded-[44px] p-8 border border-white/5 hover:border-white/10 transition-all cursor-pointer overflow-hidden h-[320px] flex flex-col"
-                style={{ animationDelay: `${idx * 100}ms` }}
+                className="stack-card animate-in fade-in slide-in-from-bottom-12 duration-700"
+                style={{ 
+                  zIndex: sortedProjects.length - idx,
+                  backgroundColor: displayColor,
+                  color: '#121212',
+                  animationDelay: `${idx * 150}ms`
+                }}
                 onClick={() => onSelectProject(proj)}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-[60px] -mr-16 -mt-16 opacity-20" style={{ backgroundColor: displayColor }}></div>
-                
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-xl" style={{ backgroundColor: displayColor, color: '#121214' }}>
-                      <i className={`fa-solid ${proj.icon}`}></i>
+                <div className="flex flex-col h-full relative">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="max-w-[85%]">
+                      <div className="flex flex-col space-y-1">
+                        {editingProjectId === proj.id ? (
+                          <input
+                            autoFocus
+                            value={tempName}
+                            onClick={(e) => e.stopPropagation()}
+                            onChange={(e) => setTempName(e.target.value)}
+                            onBlur={() => handleSaveInlineEdit(proj.id)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSaveInlineEdit(proj.id);
+                              if (e.key === 'Escape') setEditingProjectId(null);
+                            }}
+                            className="bg-black/10 border-b-2 border-current outline-none text-[28px] sm:text-[34px] font-black tracking-tighter leading-none w-full px-2 py-1 rounded-sm mb-4"
+                          />
+                        ) : (
+                          <h3 
+                            onClick={(e) => handleStartInlineEdit(e, proj)}
+                            className="text-[32px] sm:text-[38px] font-black tracking-tighter leading-[1.1] line-clamp-2 cursor-text"
+                          >
+                            {proj.name}
+                          </h3>
+                        )}
+                        
+                        <div className="flex items-center space-x-2.5 opacity-40">
+                           {proj.isPinned && <i className="fa-solid fa-thumbtack text-[11px]"></i>}
+                           <span className="text-[11px] font-black uppercase tracking-[0.25em] flex items-center">
+                             {proj.tags && proj.tags.length > 0 ? proj.tags.join(' • ') : TEMPLATES[proj.writingType]?.label}
+                           </span>
+                        </div>
+                      </div>
                     </div>
                     
                     <div className="relative">
@@ -198,41 +230,54 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                           e.stopPropagation();
                           setActiveMenuId(activeMenuId === proj.id ? null : proj.id);
                         }}
-                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                        className="w-12 h-12 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors"
                       >
-                        <i className="fa-solid fa-ellipsis-vertical text-gray-500"></i>
+                        <i className="fa-solid fa-ellipsis-vertical text-xl opacity-40"></i>
                       </button>
 
                       {activeMenuId === proj.id && (
-                        <div className="absolute right-0 top-12 w-48 bg-[#1C1C1E] border border-white/10 rounded-2xl shadow-3xl z-[50] p-1.5 animate-in fade-in zoom-in duration-200">
-                          <button onClick={(e) => handleTogglePin(e, proj)} className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-white/5 text-left transition-colors">
-                            <i className={`fa-solid ${proj.isPinned ? 'fa-thumbtack text-[#D4FF5F]' : 'fa-thumbtack text-gray-500'}`}></i>
-                            <span className="text-[11px] font-black text-white uppercase tracking-widest">{proj.isPinned ? '取消置頂' : '置頂專案'}</span>
+                        <div 
+                          className="absolute right-0 top-14 w-52 bg-[#1C1C1E] border border-white/10 rounded-[28px] shadow-3xl z-[200] p-1.5 animate-in fade-in zoom-in duration-300"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button 
+                            onClick={(e) => handleTogglePin(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors"
+                          >
+                            <i className={`fa-solid ${proj.isPinned ? 'fa-thumbtack text-[#D4FF5F]' : 'fa-thumbtack text-gray-400'}`}></i>
+                            <span className="text-[12px] font-black text-white uppercase tracking-widest">{proj.isPinned ? '取消置頂' : '置頂專案'}</span>
                           </button>
-                          <button onClick={(e) => handleDelete(e, proj)} className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-left transition-colors">
+                          <button 
+                            onClick={(e) => handleStartInlineEdit(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors"
+                          >
+                            <i className="fa-solid fa-pen-to-square text-blue-500 text-lg"></i>
+                            <span className="text-[13px] font-bold text-white tracking-tight">編輯名稱</span>
+                          </button>
+                          <div className="h-px bg-white/5 my-1.5 mx-2"></div>
+                          <button 
+                            onClick={(e) => handleDelete(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-red-500/10 text-left transition-colors"
+                          >
                             <i className="fa-solid fa-trash-can text-red-500"></i>
-                            <span className="text-[11px] font-black text-red-500 uppercase tracking-widest">刪除專案</span>
+                            <span className="text-[12px] font-black text-red-500 uppercase tracking-widest">刪除專案</span>
                           </button>
                         </div>
                       )}
                     </div>
                   </div>
-
-                  <div className="space-y-2 mb-6">
-                    <h3 className="text-2xl font-black text-white tracking-tighter leading-tight line-clamp-2">{proj.name}</h3>
-                    <div className="flex items-center space-x-2 opacity-40">
-                      {proj.isPinned && <i className="fa-solid fa-thumbtack text-[10px]"></i>}
-                      <span className="text-[10px] font-black uppercase tracking-widest">{TEMPLATES[proj.writingType]?.label}</span>
+                  
+                  <div className="mt-auto pb-6">
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="text-[12px] font-black uppercase tracking-[0.15em] opacity-40 flex items-center">
+                        {proj.metadata || 'JUST NOW'}
+                      </div>
+                      <div className="text-[13px] font-black tracking-tight opacity-50">
+                        {proj.progress}%
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="mt-auto space-y-3">
-                    <div className="flex justify-between items-end text-[10px] font-black uppercase tracking-widest opacity-40">
-                      <span>{proj.metadata || 'JUST NOW'}</span>
-                      <span>{proj.progress}%</span>
-                    </div>
-                    <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-white/20 rounded-full" style={{ width: `${proj.progress}%` }} />
+                    <div className="progress-bar-container bg-black/10">
+                      <div className="progress-fill bg-black/40" style={{ width: `${proj.progress}%` }} />
                     </div>
                   </div>
                 </div>

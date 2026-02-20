@@ -16,18 +16,15 @@ interface ProfileProps {
   onUpdateBackupSettings: (settings: BackupSettings) => void;
   onUpdateSavedCards: (cards: CreditCard[]) => void;
   onUpdateCountryCode?: (code: string) => void;
-  onUpdateAvatar?: (avatar: string, type: 'UPLOAD' | 'GRAVATAR') => void;
 }
 
-const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, onUpdateAIPreferences, onUpdateSecuritySettings, onUpdateBackupSettings, onUpdateSavedCards, onUpdateCountryCode, onUpdateAvatar }) => {
+const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, onUpdateAIPreferences, onUpdateSecuritySettings, onUpdateBackupSettings, onUpdateSavedCards, onUpdateCountryCode }) => {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isAIPreferencesOpen, setIsAIPreferencesOpen] = useState(false);
   const [isSecurityOpen, setIsSecurityOpen] = useState(false);
   const [isCardsOpen, setIsCardsOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
-  const [gravatarEmail, setGravatarEmail] = useState('');
 
   const handleLanguageSelect = (lang: SupportedLanguage) => {
     onLanguageChange(lang);
@@ -78,42 +75,6 @@ const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, o
 
   const isRTL = state.language === 'ar';
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && onUpdateAvatar) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onUpdateAvatar(reader.result as string, 'UPLOAD');
-        setIsAvatarModalOpen(false);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleGravatar = () => {
-    if (gravatarEmail && onUpdateAvatar) {
-      // Simple Gravatar URL generation
-      const hash = gravatarEmail.trim().toLowerCase();
-      // In a real app we would use MD5, but for this demo we'll just use the email
-      // and assume the backend or a utility handles the hash if needed.
-      // Since we can't easily MD5 here without a library, we'll use a placeholder logic
-      // or just store the email and let the UI handle the URL construction.
-      onUpdateAvatar(hash, 'GRAVATAR');
-      setIsAvatarModalOpen(false);
-    }
-  };
-
-  const getAvatarUrl = () => {
-    if (state.avatarType === 'UPLOAD' && state.userAvatar) {
-      return state.userAvatar;
-    }
-    if (state.avatarType === 'GRAVATAR' && state.userAvatar) {
-      // Placeholder for Gravatar URL (would normally be MD5 hash)
-      return `https://www.gravatar.com/avatar/${state.userAvatar}?d=identicon&s=200`;
-    }
-    return null;
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-6 sm:px-12 py-10 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-48" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Toast Notification */}
@@ -130,16 +91,9 @@ const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, o
         
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 relative z-10">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="relative group cursor-pointer" onClick={() => setIsAvatarModalOpen(true)}>
-              <div className="w-28 h-28 rounded-[36px] bg-gradient-to-tr from-blue-600 to-[#B2A4FF] flex items-center justify-center text-white text-4xl font-black shadow-2xl transition-transform duration-500 group-hover:scale-105 overflow-hidden">
-                {getAvatarUrl() ? (
-                  <img src={getAvatarUrl()!} alt="User Avatar" className="w-full h-full object-cover" />
-                ) : (
-                  state.language.slice(0, 1).toUpperCase()
-                )}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <i className="fa-solid fa-camera text-2xl"></i>
-                </div>
+            <div className="relative group">
+              <div className="w-28 h-28 rounded-[36px] bg-gradient-to-tr from-blue-600 to-[#B2A4FF] flex items-center justify-center text-white text-4xl font-black shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                {state.language.slice(0, 1).toUpperCase()}
               </div>
               <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#D4FF5F] rounded-full border-4 border-[#1C1C1E] flex items-center justify-center text-black text-xs shadow-lg">
                 <i className="fa-solid fa-feather-pointed"></i>
@@ -381,6 +335,8 @@ const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, o
         <SecuritySettingsPage
           settings={state.securitySettings}
           onUpdate={onUpdateSecuritySettings}
+          backupSettings={state.backupSettings}
+          onUpdateBackup={onUpdateBackupSettings}
           onClose={() => setIsSecurityOpen(false)}
         />
       )}
@@ -412,57 +368,6 @@ const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, o
         <PrivacyModal 
           onClose={() => setIsPrivacyOpen(false)}
         />
-      )}
-
-      {isAvatarModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-[#1C1C1E] w-full max-w-md rounded-[44px] border border-white/10 p-10 space-y-8 shadow-3xl animate-in zoom-in-95 duration-300">
-            <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-black text-white tracking-tighter">更新頭像</h3>
-              <button onClick={() => setIsAvatarModalOpen(false)} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-500 hover:text-white transition-colors">
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest px-2">上傳照片</label>
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-3xl cursor-pointer hover:bg-white/5 hover:border-blue-500/50 transition-all group">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <i className="fa-solid fa-cloud-arrow-up text-2xl text-gray-600 group-hover:text-blue-500 mb-2"></i>
-                    <p className="text-xs text-gray-500 font-bold">點擊或拖拽上傳</p>
-                  </div>
-                  <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
-                </label>
-              </div>
-
-              <div className="relative flex items-center py-2">
-                <div className="flex-grow border-t border-white/5"></div>
-                <span className="flex-shrink mx-4 text-[10px] font-black text-gray-700 uppercase tracking-widest">或使用 Gravatar</span>
-                <div className="flex-grow border-t border-white/5"></div>
-              </div>
-
-              <div className="space-y-3">
-                <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest px-2">Gravatar 電子郵件</label>
-                <div className="flex gap-3">
-                  <input 
-                    type="email" 
-                    placeholder="email@example.com"
-                    value={gravatarEmail}
-                    onChange={(e) => setGravatarEmail(e.target.value)}
-                    className="flex-1 bg-black/20 border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-blue-600 transition-all"
-                  />
-                  <button 
-                    onClick={handleGravatar}
-                    className="px-6 bg-blue-600 rounded-2xl text-white font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all"
-                  >
-                    同步
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );

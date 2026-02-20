@@ -114,7 +114,6 @@ export interface CoverAsset {
   timestamp: number;
   complianceReport?: string;
   isCompliant: boolean;
-  history?: string[]; // Array of previous image URLs
 }
 
 export interface ChannelRule {

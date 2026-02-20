@@ -183,15 +183,11 @@ const App: React.FC = () => {
     const loadSettings = async () => {
       const country = await dbService.getAppSetting('userCountryCode');
       const lang = await dbService.getAppSetting('language');
-      const avatar = await dbService.getAppSetting('userAvatar');
-      const avatarType = await dbService.getAppSetting('avatarType');
-      if (country || lang || avatar || avatarType) {
+      if (country || lang) {
         setState(prev => ({
           ...prev,
           userCountryCode: country || prev.userCountryCode,
-          language: lang || prev.language,
-          userAvatar: avatar || prev.userAvatar,
-          avatarType: (avatarType as 'UPLOAD' | 'GRAVATAR') || prev.avatarType
+          language: lang || prev.language
         }));
       }
     };
@@ -206,9 +202,7 @@ const App: React.FC = () => {
   useEffect(() => {
     dbService.saveAppSetting('userCountryCode', state.userCountryCode);
     dbService.saveAppSetting('language', state.language);
-    if (state.userAvatar) dbService.saveAppSetting('userAvatar', state.userAvatar);
-    if (state.avatarType) dbService.saveAppSetting('avatarType', state.avatarType);
-  }, [state.userCountryCode, state.language, state.userAvatar, state.avatarType]);
+  }, [state.userCountryCode, state.language]);
   
   const currentChapter = state.currentProject?.chapters.find(c => c.id === state.currentChapterId);
   const isTimelineVisible = swipeProgress > 0 || activeOverlay === 'TIMELINE';
@@ -532,7 +526,6 @@ const App: React.FC = () => {
             onUpdateBackupSettings={(b) => setState(prev => ({...prev, backupSettings: b}))}
             onUpdateSavedCards={(c) => setState(prev => ({...prev, savedCards: c}))}
             onUpdateCountryCode={(code) => setState(prev => ({...prev, userCountryCode: code}))}
-            onUpdateAvatar={(avatar, type) => setState(prev => ({...prev, userAvatar: avatar, avatarType: type}))}
           />
         ) : (
           <div className="h-full flex items-center justify-center text-gray-500 font-black uppercase tracking-[0.5em] text-[10px]">
