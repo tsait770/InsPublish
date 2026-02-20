@@ -355,8 +355,11 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   <div className="bg-[#121214] rounded-[56px] p-10 sm:p-14 space-y-12 border border-white/5 shadow-2xl transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center space-x-8">
-                            <div className="w-20 h-20 rounded-[28px] bg-white flex items-center justify-center p-3 border border-white/10 overflow-hidden shadow-xl">
-                              <img src="https://www.ingramspark.com/hubfs/IngramSpark_2018/Logos/IS_Logo_Main.svg" alt="IngramSpark" className="w-full h-full object-contain" />
+                            <div className="w-20 h-20 rounded-[28px] bg-white flex items-center justify-center p-4 border border-white/10 overflow-hidden shadow-xl">
+                              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                <path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0ZM50 85.7143C30.2764 85.7143 14.2857 69.7236 14.2857 50C14.2857 30.2764 30.2764 14.2857 50 14.2857C69.7236 14.2857 85.7143 30.2764 85.7143 50C85.7143 69.7236 69.7236 85.7143 50 85.7143Z" fill="#005596"/>
+                                <path d="M50 28.5714C38.1655 28.5714 28.5714 38.1655 28.5714 50C28.5714 61.8345 38.1655 71.4286 50 71.4286C61.8345 71.4286 71.4286 61.8345 71.4286 50C71.4286 38.1655 61.8345 28.5714 50 28.5714Z" fill="#005596"/>
+                              </svg>
                             </div>
                             <div>
                               <h4 className="text-3xl font-black tracking-tight text-white">IngramSpark</h4>
@@ -402,8 +405,12 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   <div className="bg-[#121214] rounded-[56px] p-10 sm:p-14 space-y-12 border border-white/5 shadow-2xl transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center space-x-8">
-                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#FF6B2C] border border-white/5 flex items-center justify-center p-2 shadow-xl">
-                               <img src="https://substackcdn.com/image/fetch/w_120,h_120,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8edce1d0-7a8e-49e5-9c3a-93510f229718_1200x1200.png" alt="Substack" className="w-full h-full object-contain" />
+                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#FF6B2C] border border-white/5 flex items-center justify-center p-5 shadow-xl">
+                               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                 <path d="M22.5 4H1.5V6.75H22.5V4Z" fill="white"/>
+                                 <path d="M22.5 9.5H1.5V12.25H22.5V9.5Z" fill="white"/>
+                                 <path d="M1.5 15V21L12 15.75L22.5 21V15H1.5Z" fill="white"/>
+                               </svg>
                             </div>
                             <div>
                               <h4 className="text-3xl font-black tracking-tight text-white">Substack</h4>
@@ -419,8 +426,11 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   <div className="bg-[#121214] rounded-[56px] p-10 sm:p-14 space-y-10 border border-white/5 shadow-2xl transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center space-x-8">
-                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#1A1A3A] border border-white/5 flex items-center justify-center p-2 shadow-xl">
-                               <img src="https://logos-world.net/wp-content/uploads/2023/07/Draft2Digital-Logo.png" alt="Draft2Digital" className="w-full h-full object-contain" />
+                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#1A1A3A] border border-white/5 flex items-center justify-center p-5 shadow-xl">
+                               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                 <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D094"/>
+                                 <path d="M2 17L12 22L22 17V12L12 17L2 12V17Z" fill="#00D094"/>
+                               </svg>
                             </div>
                             <div>
                               <h4 className="text-3xl font-black tracking-tight text-white">Draft2Digital</h4>
@@ -436,18 +446,22 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   {/* Traditional Submission */}
                   <div 
                     onClick={() => { setTargetPlatform('Traditional submission'); setStep(PubStep.TRADITIONAL_SUBMISSION_PREP); }}
-                    className="bg-[#121214] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-center space-y-10 group cursor-pointer hover:border-white/20 transition-all"
+                    className="bg-[#121214] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-left space-y-10 group cursor-pointer hover:border-white/20 transition-all relative"
                   >
-                      <div className="w-20 h-20 rounded-[28px] bg-blue-600/10 flex items-center justify-center text-blue-500 text-3xl mx-auto"><i className="fa-solid fa-file-invoice"></i></div>
-                      <div className="space-y-4">
-                        <h4 className="text-3xl font-black tracking-tight text-white">Traditional Submission Package</h4>
-                        <p className="text-[11px] text-gray-500 font-black uppercase tracking-[0.3em]">FOR AGENT & PUBLISHER REVIEW</p>
-                        <p className="text-[16px] text-gray-600 leading-relaxed max-w-md mx-auto">No direct submission required. We prepare industry-standard submission materials including synopsis, bio, and sample chapters.</p>
-                      </div>
-                      <div className="flex justify-end">
-                        <div className="w-12 h-12 border border-dashed border-white/20 rounded-lg flex items-center justify-center group-hover:border-blue-500/50 transition-colors">
-                          <i className="fa-solid fa-arrow-right text-gray-800 text-xl group-hover:text-blue-500 transition-colors"></i>
+                      <div className="flex items-center space-x-8">
+                        <div className="w-20 h-24 rounded-[32px] bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-4xl shadow-inner">
+                          <i className="fa-solid fa-file-lines"></i>
                         </div>
+                        <div className="space-y-2">
+                          <h4 className="text-4xl font-black tracking-tight text-white leading-tight">Traditional<br/>Submission<br/>Package</h4>
+                          <p className="text-[11px] text-gray-500 font-black uppercase tracking-[0.4em] mt-2">FOR AGENT & PUBLISHER REVIEW</p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-[18px] text-gray-500 leading-relaxed font-medium max-w-md pl-2">No direct submission required. We prepare industry-standard submission materials including synopsis, bio, and sample chapters.</p>
+                      
+                      <div className="absolute bottom-14 right-14">
+                        <i className="fa-solid fa-arrow-right text-gray-800 text-2xl group-hover:text-blue-500 transition-colors"></i>
                       </div>
                   </div>
               </div>
