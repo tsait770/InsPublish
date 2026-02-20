@@ -70,7 +70,8 @@ export const geminiService = {
         source: 'AI',
         timestamp: Date.now(),
         isCompliant: true, // AI Generated with these settings is compliant by default
-        complianceReport: `✅ 符合 ${spec.desc} 標準規格 (${spec.ratio})。自動校驗完成。`
+        complianceReport: `✅ 符合 ${spec.desc} 標準規格 (${spec.ratio})。自動校驗完成。`,
+        prompt: prompt
       };
     }
     throw new Error("Imagen generation failed: No image returned");

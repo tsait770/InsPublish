@@ -114,6 +114,7 @@ export interface CoverAsset {
   timestamp: number;
   complianceReport?: string;
   isCompliant: boolean;
+  history?: CoverAsset[];
 }
 
 export interface ChannelRule {

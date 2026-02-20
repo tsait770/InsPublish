@@ -1,7 +1,7 @@
 {
   "name": "InsPublish",
   "short_name": "InsPublish",
-  "description": "專業、安全的跨平台寫作系統",
+  "description": "專業級敘事引擎與跨平台出版系統",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",

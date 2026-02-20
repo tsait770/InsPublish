@@ -12,7 +12,8 @@ enum PubStep {
   TRADITIONAL_SUBMISSION_PREP,
   FINALIZATION, 
   DELIVERY_SEQUENCE, 
-  SUCCESS 
+  SUCCESS,
+  PREFLIGHT_OVERVIEW
 }
 
 interface ProfessionalPublicationCenterProps {
@@ -169,7 +170,15 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                 const isPendingReview = nodeStatus?.isPendingReview;
                 const isCurrent = nodeId === (project?.publishingSpine?.currentNode || SpineNodeId.WRITING);
                 return (
-                  <div key={nodeId} className={`p-6 rounded-[32px] border transition-all flex items-center justify-between ${isCompleted ? 'bg-blue-600/10 border-blue-500/30' : isPendingReview ? 'bg-amber-600/10 border-amber-500/30 shadow-lg' : isCurrent ? 'bg-[#1C1C1E] border-white/20 shadow-xl' : 'bg-[#121214] border-white/5 opacity-50'}`}>
+                  <div 
+                    key={nodeId} 
+                    onClick={() => {
+                      if (nodeId === SpineNodeId.PREFLIGHT_CHECK) {
+                        setStep(PubStep.PREFLIGHT_OVERVIEW);
+                      }
+                    }}
+                    className={`p-6 rounded-[32px] border transition-all flex items-center justify-between cursor-pointer ${isCompleted ? 'bg-blue-600/10 border-blue-500/30' : isPendingReview ? 'bg-amber-600/10 border-amber-500/30 shadow-lg' : isCurrent ? 'bg-[#1C1C1E] border-white/20 shadow-xl' : 'bg-[#121214] border-white/5 opacity-50'}`}
+                  >
                      <div className="flex items-center space-x-6">
                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl ${isCompleted ? 'bg-blue-600 text-white' : isPendingReview ? 'bg-amber-600 text-white animate-pulse' : isCurrent ? 'bg-blue-600/20 text-blue-400' : 'bg-white/5 text-gray-700'}`}>
                            <i className={`fa-solid ${isPendingReview ? 'fa-hourglass-half' : configNode.icon}`}></i>
@@ -680,6 +689,123 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
            <h2 className="text-4xl font-black tracking-tighter text-white">{currentStep.title}</h2>
            <p className="text-[11px] text-blue-500 font-black uppercase tracking-[0.5em] opacity-80">{currentStep.en}</p>
         </div>
+      </div>
+    );
+  }
+
+  if (step === PubStep.PREFLIGHT_OVERVIEW) {
+    const assets = project?.publishingPayload?.coverAssets || {};
+    const checks = [
+      { 
+        label: 'Metadata Completeness', 
+        status: project?.publishingPayload?.title && project?.publishingPayload?.author && project?.publishingPayload?.longDescription ? 'PASS' : 'FAIL',
+        desc: 'Title, Author, and Long Description must be set.'
+      },
+      {
+        label: 'Digital Cover (E-BOOK)',
+        status: assets[CoverAssetType.EBOOK_DIGITAL] ? 'PASS' : 'FAIL',
+        desc: 'Required for all digital distribution channels.'
+      },
+      {
+        label: 'Print Cover (PAPERBACK)',
+        status: assets[CoverAssetType.PRINT_PAPERBACK] ? 'PASS' : 'WARN',
+        desc: 'Required for physical publishing (Amazon Paperback, IngramSpark).'
+      },
+      {
+        label: 'ISBN Identification',
+        status: isValidISBN13(project?.publishingPayload?.isbn13 || '') ? 'PASS' : 'WARN',
+        desc: 'Required for retail distribution (IngramSpark, Amazon Paperback).'
+      },
+      {
+        label: 'Content Readiness',
+        status: project?.chapters && project.chapters.length > 0 ? 'PASS' : 'FAIL',
+        desc: 'At least one chapter must be present in the manuscript.'
+      }
+    ];
+
+    const allPassed = checks.every(c => c.status === 'PASS');
+
+    return (
+      <div className="fixed inset-0 z-[2000] bg-[#0A0A0B] flex flex-col animate-in fade-in duration-500 overflow-hidden text-white font-sans">
+        <header className="h-24 px-8 pt-[env(safe-area-inset-top,0px)] flex items-center justify-between shrink-0 border-b border-white/5 bg-black/80 backdrop-blur-3xl">
+          <button onClick={() => setStep(PubStep.SPINE_OVERVIEW)} className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 active:scale-90 transition-all">
+             <i className="fa-solid fa-chevron-left text-xl"></i>
+          </button>
+          <div className="text-center">
+            <h2 className="text-[11px] font-black uppercase tracking-[0.5em]">PREFLIGHT CHECK</h2>
+            <p className="text-[9px] text-blue-500 font-black uppercase tracking-widest mt-1">ASSET AUDIT PROTOCOL</p>
+          </div>
+          <div className="w-12" />
+        </header>
+
+        <main className="flex-1 overflow-y-auto px-8 py-12 no-scrollbar space-y-12 pb-64">
+          <div className="text-center space-y-4 max-w-lg mx-auto">
+             <h3 className="text-3xl font-black tracking-tighter">全書資產總覽</h3>
+             <p className="text-sm text-gray-500 leading-relaxed font-medium">在正式 Commit 到出版通道前，系統將對您的專案進行最後的合規性掃描。</p>
+          </div>
+
+          <div className="max-w-2xl mx-auto space-y-4">
+            {checks.map((check, idx) => (
+              <div key={idx} className="p-8 rounded-[32px] bg-[#121214] border border-white/5 flex items-center justify-between group hover:border-white/10 transition-all">
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-3">
+                    <h4 className="text-[15px] font-bold text-white">{check.label}</h4>
+                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                      check.status === 'PASS' ? 'bg-[#D4FF5F]/10 text-[#D4FF5F] border border-[#D4FF5F]/20' : 
+                      check.status === 'WARN' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 
+                      'bg-red-500/10 text-red-500 border border-red-500/20'
+                    }`}>
+                      {check.status}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-600 font-medium uppercase tracking-widest">{check.desc}</p>
+                </div>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  check.status === 'PASS' ? 'text-[#D4FF5F]' : 
+                  check.status === 'WARN' ? 'text-amber-500' : 
+                  'text-red-500'
+                }`}>
+                  <i className={`fa-solid ${check.status === 'PASS' ? 'fa-circle-check' : 'fa-circle-exclamation'}`}></i>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {!allPassed && (
+            <div className="max-w-2xl mx-auto p-8 rounded-[32px] bg-amber-500/5 border border-amber-500/20 flex items-start space-x-6">
+              <i className="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
+              <p className="text-[13px] text-amber-500/80 font-medium leading-relaxed">
+                檢測到部分規格缺失或建議優化項。雖然這不一定會阻止生成，但可能會導致特定出版通道（如實體印刷）投遞失敗。
+              </p>
+            </div>
+          )}
+        </main>
+
+        <footer className="absolute bottom-0 inset-x-0 p-8 pb-12 bg-gradient-to-t from-black via-black to-transparent shrink-0 flex space-x-4">
+           <button 
+             onClick={() => {
+                if (onUpdateProject && project) {
+                  const currentSpine = project.publishingSpine || { currentNode: SpineNodeId.WRITING, nodes: INITIAL_SPINE_NODES() };
+                  const updatedSpine: PublishingSpineState = {
+                    ...currentSpine,
+                    nodes: {
+                      ...currentSpine.nodes,
+                      [SpineNodeId.PREFLIGHT_CHECK]: {
+                        id: SpineNodeId.PREFLIGHT_CHECK,
+                        isCompleted: true,
+                        timestamp: Date.now()
+                      }
+                    }
+                  };
+                  onUpdateProject({ ...project, publishingSpine: updatedSpine });
+                }
+                setStep(PubStep.SPINE_OVERVIEW);
+             }}
+             className="flex-1 h-24 bg-white text-black rounded-[44px] text-[13px] font-black uppercase tracking-[0.4em] shadow-2xl active:scale-95 transition-all"
+           >
+             確認並標記完成
+           </button>
+        </footer>
       </div>
     );
   }

@@ -272,39 +272,39 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onOpenMo
 
       <main className="px-8 space-y-12">
         
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-6">
-          <div className="bg-[#1C1C1E] p-8 rounded-[44px] border border-white/5 space-y-3">
-            <p className="text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">總字數統計</p>
-            <div className="flex items-baseline space-x-1.5">
-              <span className="text-3xl font-black text-white">{totalWords.toLocaleString()}</span>
-              <span className="text-[11px] font-bold text-gray-700">/ {wordGoal.toLocaleString()}</span>
-            </div>
-          </div>
-          
-          <div className="bg-[#1C1C1E] p-8 rounded-[44px] border border-white/5 space-y-3">
-            <p className="text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">創作天數</p>
-            <p className="text-3xl font-black text-[#D4FF5F] tracking-tight">{writingDays} DAYS</p>
-          </div>
-          
-          <div className="bg-[#1C1C1E] p-8 rounded-[44px] border border-white/5 space-y-4">
-            <p className="text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">當前進度</p>
-            <div className="flex items-center space-x-4">
-              <span className="text-3xl font-black text-[#B2A4FF]">{miniProgress}%</span>
-              <div className="flex-1 h-1.5 bg-black/40 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-[#B2A4FF]/40 rounded-full" 
-                  style={{ width: `${miniProgress}%` }} 
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-[#1C1C1E] p-8 rounded-[44px] border border-white/5 space-y-3">
-            <p className="text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">架構模組數</p>
-            <p className="text-3xl font-black text-white tracking-tight">{project.chapters.length} NODES</p>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-[#1C1C1E] p-6 sm:p-8 rounded-[32px] sm:rounded-[44px] border border-white/5 space-y-3">
+          <p className="text-[9px] sm:text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">總字數統計</p>
+          <div className="flex items-baseline space-x-1.5">
+            <span className="text-2xl sm:text-3xl font-black text-white">{totalWords.toLocaleString()}</span>
+            <span className="text-[10px] sm:text-[11px] font-bold text-gray-700">/ {wordGoal.toLocaleString()}</span>
           </div>
         </div>
+        
+        <div className="bg-[#1C1C1E] p-6 sm:p-8 rounded-[32px] sm:rounded-[44px] border border-white/5 space-y-3">
+          <p className="text-[9px] sm:text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">創作天數</p>
+          <p className="text-2xl sm:text-3xl font-black text-[#D4FF5F] tracking-tight">{writingDays} DAYS</p>
+        </div>
+        
+        <div className="bg-[#1C1C1E] p-6 sm:p-8 rounded-[32px] sm:rounded-[44px] border border-white/5 space-y-4">
+          <p className="text-[9px] sm:text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">當前進度</p>
+          <div className="flex items-center space-x-4">
+            <span className="text-2xl sm:text-3xl font-black text-[#B2A4FF]">{miniProgress}%</span>
+            <div className="flex-1 h-1.5 bg-black/40 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-[#B2A4FF]/40 rounded-full" 
+                style={{ width: `${miniProgress}%` }} 
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-[#1C1C1E] p-6 sm:p-8 rounded-[32px] sm:rounded-[44px] border border-white/5 space-y-3">
+          <p className="text-[9px] sm:text-[10px] font-black text-[#8E8E93] uppercase tracking-widest">架構模組數</p>
+          <p className="text-2xl sm:text-3xl font-black text-white tracking-tight">{project.chapters.length} NODES</p>
+        </div>
+      </div>
 
         <section className="w-full bg-[#1C1C1E] rounded-[44px] p-10 shadow-2xl relative overflow-hidden group border border-white/5">
           <div className="flex justify-between items-start mb-10">
