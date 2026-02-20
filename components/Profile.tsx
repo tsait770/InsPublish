@@ -335,6 +335,8 @@ const Profile: React.FC<ProfileProps> = ({ state, onUpgrade, onLanguageChange, o
         <SecuritySettingsPage
           settings={state.securitySettings}
           onUpdate={onUpdateSecuritySettings}
+          backupSettings={state.backupSettings}
+          onUpdateBackup={onUpdateBackupSettings}
           onClose={() => setIsSecurityOpen(false)}
         />
       )}

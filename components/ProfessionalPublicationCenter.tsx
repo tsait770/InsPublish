@@ -355,10 +355,12 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   <div className="bg-[#121214] rounded-[56px] p-10 sm:p-14 space-y-12 border border-white/5 shadow-2xl transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center space-x-8">
-                            <div className="w-20 h-20 rounded-[28px] bg-white flex items-center justify-center p-4 border border-white/10 overflow-hidden shadow-xl">
-                              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                                <path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0ZM50 85.7143C30.2764 85.7143 14.2857 69.7236 14.2857 50C14.2857 30.2764 30.2764 14.2857 50 14.2857C69.7236 14.2857 85.7143 30.2764 85.7143 50C85.7143 69.7236 69.7236 85.7143 50 85.7143Z" fill="#005596"/>
-                                <path d="M50 28.5714C38.1655 28.5714 28.5714 38.1655 28.5714 50C28.5714 61.8345 38.1655 71.4286 50 71.4286C61.8345 71.4286 71.4286 61.8345 71.4286 50C71.4286 38.1655 61.8345 28.5714 50 28.5714Z" fill="#005596"/>
+                            <div className="w-20 h-20 rounded-[28px] bg-white flex items-center justify-center p-2 border border-white/10 overflow-hidden shadow-xl">
+                              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="#54A0C0" stroke-width="8"/>
+                                <text x="100" y="112" font-family="system-ui, sans-serif" font-weight="500" font-size="30" text-anchor="middle">
+                                  <tspan fill="#54A0C0">Ingram</tspan><tspan fill="#FFB800" font-weight="700">Spark</tspan>
+                                </text>
                               </svg>
                             </div>
                             <div>
@@ -426,10 +428,12 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   <div className="bg-[#121214] rounded-[56px] p-10 sm:p-14 space-y-10 border border-white/5 shadow-2xl transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center space-x-8">
-                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#1A1A3A] border border-white/5 flex items-center justify-center p-5 shadow-xl">
-                               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                                 <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00D094"/>
-                                 <path d="M2 17L12 22L22 17V12L12 17L2 12V17Z" fill="#00D094"/>
+                            <div className="w-20 h-20 rounded-[28px] overflow-hidden bg-[#1A1A3A] border border-white/5 flex items-center justify-center p-3 shadow-xl">
+                               <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                                 <text x="5" y="62" font-family="Arial Black, sans-serif" font-weight="900" font-size="32" fill="white">D</text>
+                                 <path d="M40 45 C 40 30, 70 30, 70 45 C 70 60, 35 80, 35 80 L 85 80" fill="none" stroke="#FF4500" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                                 <path d="M85 80 L 75 70 M 85 80 L 75 90" fill="none" stroke="#FF4500" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                                 <text x="75" y="62" font-family="Arial Black, sans-serif" font-weight="900" font-size="32" fill="white">D</text>
                                </svg>
                             </div>
                             <div>

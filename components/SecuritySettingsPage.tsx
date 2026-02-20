@@ -1,15 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { SecuritySettings } from '../types';
+import { SecuritySettings, BackupSettings } from '../types';
 
 interface SecuritySettingsPageProps {
   settings: SecuritySettings;
   onUpdate: (settings: SecuritySettings) => void;
+  backupSettings: BackupSettings;
+  onUpdateBackup: (settings: BackupSettings) => void;
   onClose: () => void;
 }
 
-const SecuritySettingsPage: React.FC<SecuritySettingsPageProps> = ({ settings, onUpdate, onClose }) => {
+const SecuritySettingsPage: React.FC<SecuritySettingsPageProps> = ({ settings, onUpdate, backupSettings, onUpdateBackup, onClose }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -193,6 +195,73 @@ const SecuritySettingsPage: React.FC<SecuritySettingsPageProps> = ({ settings, o
               </section>
             </div>
           )}
+
+          {/* Google Drive 備份設定 */}
+          <section className="space-y-6">
+            <div className="px-2">
+              <h3 className="text-[10px] sm:text-[11px] font-black text-slate-500 uppercase tracking-[0.4em] flex items-center">
+                <i className="fa-brands fa-google-drive mr-3 text-blue-500/40 text-xs"></i>
+                雲端備份設定 CLOUD BACKUP
+              </h3>
+            </div>
+            <div className="bg-[#0F0F11] rounded-[44px] p-8 sm:p-10 border border-white/5 space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-5">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${backupSettings.googleDriveConnected ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-600'}`}>
+                    <i className="fa-brands fa-google-drive text-2xl"></i>
+                  </div>
+                  <div>
+                    <h4 className="text-base sm:text-lg font-black text-white tracking-tight">Google Drive 備份</h4>
+                    <p className="text-[9px] text-gray-600 font-black uppercase tracking-widest mt-1">
+                      {backupSettings.googleDriveConnected ? 'CONNECTED' : 'DISCONNECTED'}
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    if (!backupSettings.googleDriveConnected) {
+                      const path = prompt("請輸入 Google Drive 備份路徑：", "/InsPublish/Backups");
+                      if (path) {
+                        onUpdateBackup({
+                          ...backupSettings,
+                          googleDriveConnected: true,
+                          backupFolder: path,
+                          status: 'SYNCING',
+                          lastBackupTime: Date.now()
+                        });
+                      }
+                    } else {
+                      if (confirm("確定要斷開 Google Drive 連結嗎？")) {
+                        onUpdateBackup({
+                          ...backupSettings,
+                          googleDriveConnected: false,
+                          status: 'IDLE'
+                        });
+                      }
+                    }
+                  }}
+                  className={`w-16 h-8 rounded-full flex items-center px-1 transition-all duration-500 ${backupSettings.googleDriveConnected ? 'bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/10'}`}
+                >
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-transform duration-500 ${backupSettings.googleDriveConnected ? 'translate-x-8' : 'translate-x-0'}`} />
+                </button>
+              </div>
+
+              {backupSettings.googleDriveConnected && (
+                <div className="pt-6 border-t border-white/5 space-y-4 animate-in fade-in duration-500">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">備份路徑</span>
+                    <span className="text-[10px] font-black text-blue-400">{backupSettings.backupFolder}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">最後備份時間</span>
+                    <span className="text-[10px] font-black text-gray-400">
+                      {backupSettings.lastBackupTime ? new Date(backupSettings.lastBackupTime).toLocaleString() : '從未備份'}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
 
           {/* 數據救贖保障說明 */}
           <section className="bg-gradient-to-tr from-[#121214] to-[#0A0A0C] p-8 sm:p-12 rounded-[44px] border border-blue-600/10 flex flex-col items-center space-y-10 shadow-2xl relative overflow-hidden">

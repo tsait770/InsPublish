@@ -188,12 +188,20 @@ const Editor: React.FC<EditorProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
-            <button 
-              onClick={handleTogglePreview}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${isPreviewMode ? 'text-[#7b61ff] bg-[#7b61ff]/10' : 'text-[#8E8E93]'}`}
-            >
-              <i className="fa-solid fa-eye text-base"></i>
-            </button>
+            <div className="flex bg-white/5 rounded-xl p-1 border border-white/10">
+              <button 
+                onClick={() => setIsPreviewMode(false)}
+                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${!isPreviewMode ? 'bg-white text-black shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+              >
+                EDIT
+              </button>
+              <button 
+                onClick={() => setIsPreviewMode(true)}
+                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${isPreviewMode ? 'bg-[#7b61ff] text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+              >
+                PREVIEW
+              </button>
+            </div>
             <button 
               onClick={handleToggleFocus}
               className={`h-10 px-4 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] border transition-all ${uiMode === UIMode.FOCUS ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-lg shadow-purple-900/40' : 'bg-white/5 border-white/10 text-white'}`}
