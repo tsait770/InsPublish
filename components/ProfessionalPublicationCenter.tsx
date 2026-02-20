@@ -450,7 +450,7 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   {/* Traditional Submission */}
                   <div 
                     onClick={() => { setTargetPlatform('Traditional submission'); setStep(PubStep.TRADITIONAL_SUBMISSION_PREP); }}
-                    className="bg-[#121214] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-left space-y-10 group cursor-pointer hover:border-white/20 transition-all relative"
+                    className="bg-[#121214] hover:bg-[#2a2a2a] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-left space-y-10 group cursor-pointer hover:border-white/20 transition-all relative"
                   >
                       <div className="flex items-center space-x-8">
                         <div className="w-20 h-24 rounded-[32px] bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-500 text-4xl shadow-inner">
