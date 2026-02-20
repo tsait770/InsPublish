@@ -9,6 +9,7 @@ enum PubStep {
   TEMPLATE_GALLERY, 
   CONFIG, 
   DISTRIBUTION_GALLERY, 
+  TRADITIONAL_SUBMISSION_PREP,
   FINALIZATION, 
   DELIVERY_SEQUENCE, 
   SUCCESS 
@@ -433,14 +434,21 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
                   </div>
 
                   {/* Traditional Submission */}
-                  <div className="bg-[#121214] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-center space-y-10 group cursor-pointer hover:border-white/20 transition-all">
+                  <div 
+                    onClick={() => { setTargetPlatform('Traditional submission'); setStep(PubStep.TRADITIONAL_SUBMISSION_PREP); }}
+                    className="bg-[#121214] rounded-[56px] p-14 border-2 border-dashed border-white/10 text-center space-y-10 group cursor-pointer hover:border-white/20 transition-all"
+                  >
                       <div className="w-20 h-20 rounded-[28px] bg-blue-600/10 flex items-center justify-center text-blue-500 text-3xl mx-auto"><i className="fa-solid fa-file-invoice"></i></div>
                       <div className="space-y-4">
                         <h4 className="text-3xl font-black tracking-tight text-white">Traditional Submission Package</h4>
                         <p className="text-[11px] text-gray-500 font-black uppercase tracking-[0.3em]">FOR AGENT & PUBLISHER REVIEW</p>
                         <p className="text-[16px] text-gray-600 leading-relaxed max-w-md mx-auto">No direct submission required. We prepare industry-standard submission materials including synopsis, bio, and sample chapters.</p>
                       </div>
-                      <div className="flex justify-end"><i className="fa-solid fa-arrow-right text-gray-800 text-2xl group-hover:text-blue-500 transition-colors"></i></div>
+                      <div className="flex justify-end">
+                        <div className="w-12 h-12 border border-dashed border-white/20 rounded-lg flex items-center justify-center group-hover:border-blue-500/50 transition-colors">
+                          <i className="fa-solid fa-arrow-right text-gray-800 text-xl group-hover:text-blue-500 transition-colors"></i>
+                        </div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -503,6 +511,68 @@ const ProfessionalPublicationCenter: React.FC<ProfessionalPublicationCenterProps
               </div>
           </div>
         </main>
+      </div>
+    );
+  }
+
+  if (step === PubStep.TRADITIONAL_SUBMISSION_PREP) {
+    return (
+      <div className="fixed inset-0 z-[2000] bg-black flex flex-col animate-in slide-in-from-right duration-500 overflow-hidden text-white font-sans">
+        <header className="h-[96px] px-8 pt-[env(safe-area-inset-top,0px)] flex items-center justify-between shrink-0 border-b border-white/5 bg-black/80">
+          <button onClick={() => setStep(PubStep.DISTRIBUTION_GALLERY)} className="w-12 h-12 flex items-center justify-start text-white opacity-60 active:scale-90 transition-all">
+            <i className="fa-solid fa-chevron-left text-lg"></i>
+          </button>
+          <div className="text-center">
+            <h2 className="text-[13px] font-black uppercase tracking-[0.4em]">PREPARATION</h2>
+            <p className="text-[11px] text-blue-500 font-black uppercase tracking-[0.1em] mt-1.5">TARGET: TRADITIONAL SUBMISSION</p>
+          </div>
+          <div className="w-12" />
+        </header>
+
+        <main className="flex-1 overflow-y-auto px-8 py-10 no-scrollbar space-y-12 pb-48">
+           {/* Blue Path Card */}
+           <section className="bg-blue-600/10 border border-blue-500/20 rounded-[44px] p-10 space-y-8">
+              <h3 className="text-[28px] font-black text-white tracking-tight">投稿審閱路徑</h3>
+              <p className="text-[16px] text-gray-400 leading-relaxed font-medium">
+                此路徑為投稿審閱用途。系統將根據您目前的文稿內容，自動準備符合業界標準的投稿資料包（Submission Package），包含大綱、作者簡介與樣章。
+              </p>
+              <div className="bg-black/40 border border-white/5 rounded-2xl p-6 flex items-center space-x-4">
+                 <i className="fa-solid fa-circle-info text-blue-500 text-sm"></i>
+                 <p className="text-[13px] font-bold text-blue-500/80 tracking-tight">系統將不會進行任何形式的直接出版</p>
+              </div>
+           </section>
+
+           <section className="space-y-6">
+              <label className="text-[11px] font-black text-gray-700 uppercase tracking-[0.25em] px-2">DESCRIPTION / BLURB</label>
+              <div className="bg-[#121214] rounded-[44px] p-10 shadow-inner h-[280px] border border-white/5">
+                 <textarea 
+                   placeholder="What is your work about?" 
+                   value={config.longDescription} 
+                   onChange={(e) => handleUpdateConfig('longDescription', e.target.value)} 
+                   className="w-full h-full bg-transparent border-none outline-none focus:ring-0 text-[18px] font-bold text-gray-300 placeholder-gray-800 resize-none leading-relaxed" 
+                 />
+              </div>
+           </section>
+
+           <section className="bg-blue-900/10 border border-blue-500/10 rounded-[44px] p-10 flex items-start space-x-6">
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                <i className="fa-solid fa-info text-[12px] text-white"></i>
+              </div>
+              <p className="text-[14px] text-gray-500 font-bold leading-relaxed opacity-80">
+                Your work will be delivered as a professional publication package. All content remains under your full ownership through the responsibility transfer protocol.
+              </p>
+           </section>
+        </main>
+        
+        <footer className="fixed bottom-0 inset-x-0 p-8 pb-10 bg-gradient-to-t from-black via-black/95 to-transparent z-50">
+           <button 
+             onClick={() => setStep(PubStep.DELIVERY_SEQUENCE)} 
+             className="w-full h-[92px] rounded-full flex items-center justify-center space-x-6 shadow-[0_25px_60px_rgba(37,99,235,0.4)] bg-[#2563EB] text-white active:scale-[0.98] transition-all"
+           >
+                <i className="fa-solid fa-file-invoice text-xs"></i>
+                <span className="text-[15px] font-black uppercase tracking-[0.35em]">PREPARE SUBMISSION PACKAGE</span>
+           </button>
+        </footer>
       </div>
     );
   }
