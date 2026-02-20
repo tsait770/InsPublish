@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>InsPublish - 你的專業寫作避風港 | AI 驅動的創作與出版系統</title>
+    <meta name="title" content="InsPublish - 你的專業寫作避風港 | AI 驅動的創作與出版系統">
+    <meta name="description" content="InsPublish 是一款專為作家、研究員與專業創作者設計的跨平台寫作系統。整合 Gemini AI 智慧分析、多語系翻譯與全球一鍵投遞出版功能。提供軍事級數據加密與即時快照保護。">
+    <meta name="keywords" content="寫作系統, AI 寫作, 創作助理, Gemini AI, 小說創作, 專業出版, InsPublish, 數據加密, 翻譯工具, 作者助手, 稿件管理, KDP 出版">
+    <meta name="author" content="InsPublish Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://inspublish.io/">
+    <meta property="og:title" content="InsPublish - 你的專業寫作避風港">
+    <meta property="og:description" content="專業、安全、智慧。InsPublish 整合 Gemini AI，從第一道靈感到全球發行，全程守護您的創作。">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3596/3596080.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://inspublish.io/">
+    <meta property="twitter:title" content="InsPublish - 專業寫作系統">
+    <meta property="twitter:description" content="整合 Gemini AI 智慧分析與全球出版。InsPublish 是創作者的最佳伴侶。">
+    <meta property="twitter:image" content="https://cdn-icons-png.flaticon.com/512/3596/3596080.png">
+
+    <link rel="manifest" href="metadata.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+TC:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-card-surface: #1C1C1E;
+            --accent-yellow: #FADE4B;
+            --accent-orange: #FF6B2C;
+            --accent-green: #D4FF5F;
+            --accent-purple: #B2A4FF;
+            --accent-peach: #FF9F7A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --text-on-light: #121212;
+            --radius-lg: 44px; /* Strictly 44px as per reference */
+            --radius-md: 24px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overscroll-behavior-y: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-serif-editor {
+            font-family: 'Noto Serif TC', 'Merriweather', serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Stacking Card Design - Optimized for "均衡上下排列" (Balanced Vertical Arrangement) */
+        .stack-container {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 250px;
+            margin-top: 10px;
+            perspective: 1200px;
+        }
+        
+        .stack-card {
+            border-radius: var(--radius-lg);
+            padding: 44px 48px;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+            margin-bottom: -180px; /* Precise peaking sliver depth based on ref image */
+            height: 320px; /* Increased height for better proportions */
+            transform-origin: center top;
+        }
+
+        .stack-card:hover {
+            transform: translateY(-80px) scale(1.025);
+            z-index: 100 !important;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+        }
+
+        .stack-card:active {
+            transform: translateY(-75px) scale(0.99);
+        }
+
+        .stack-card:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Power/Menu Button inside card */
+        .card-action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background: rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .card-action-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Progress Bar - Optimized Visuals based on high-res snippet */
+        .progress-bar-container {
+            height: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Weather Card - Compliant with 44px radius */
+        .weather-card {
+          width: 100%;
+          height: 235px;
+          position: relative;
+          padding: 28px;
+          background: radial-gradient(178.94% 106.41% at 26.42% 106.41%, #FFF7B1 0%, rgba(255, 255, 255, 0) 71.88%), #FFFFFF;
+          box-shadow: 0px 40px 60px rgba(0, 0, 0, 0.2);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+        }
+        .weather-container { width: 250px; height: 250px; position: absolute; right: -35px; top: -50px; display: flex; align-items: center; justify-content: center; transform: scale(0.7); pointer-events: none; }
+        .cloud { width: 250px; }
+        .front { padding-top: 45px; margin-left: 25px; display: inline; position: absolute; z-10: 11; animation: clouds 8s infinite; animation-timing-function: ease-in-out; }
+        .back { margin-top: -30px; margin-left: 150px; z-index: 12; animation: clouds 12s infinite; animation-timing-function: ease-in-out; }
+        .right-front { width: 45px; height: 45px; border-radius: 50% 50% 50% 0%; background-color: #4c9beb; display: inline-block; margin-left: -25px; }
+        .left-front { width: 65px; height: 65px; border-radius: 50% 50% 0% 50%; background-color: #4c9beb; display: inline-block; }
+        .right-back { width: 50px; height: 50px; border-radius: 50% 50% 50% 0%; background-color: #4c9beb; display: inline-block; margin-left: -20px; }
+        .left-back { width: 30px; height: 30px; border-radius: 50% 50% 0% 50%; background-color: #4c9beb; display: inline-block; }
+        .sun { width: 120px; height: 120px; background: linear-gradient(to right, #fcbb04, #fffc00); border-radius: 60px; display: inline; position: absolute; }
+        .sunshine { animation: sunshines 2s infinite; }
+        @keyframes sunshines { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.4); opacity: 0; } }
+        @keyframes clouds { 0% { transform: translateX(15px); } 50% { transform: translateX(0px); } 100% { transform: translateX(15px); } }
+        .temp { position: absolute; left: 28px; bottom: 15px; font-weight: 700; font-size: 72px; line-height: 1; color: rgba(87, 77, 51, 1); letter-spacing: -2px; }
+        .temp-scale { position: absolute; right: 28px; bottom: 28px; padding: 6px 16px; background: rgba(0, 0, 0, 0.06); border-radius: 12px; font-weight: 800; font-size: 14px; color: rgba(87, 77, 51, 0.5); }
+
+        /* Flip Card - Integrated for Payment/Membership */
+        .flip-card {
+          background-color: transparent;
+          width: 300px;
+          height: 192px;
+          perspective: 1000px;
+          color: white;
+          margin: 0 auto;
+        }
+
+        .flip-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          transition: transform 0.8s;
+          transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+          transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+          box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          border-radius: 1.5rem;
+        }
+
+        .flip-card-front {
+          box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+          background-color: #171717;
+          overflow: hidden;
+        }
+
+        .flip-card-back {
+          box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 2px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
+          background-color: #171717;
+          transform: rotateY(180deg);
+        }
+
+        .heading_8264 {
+          position: absolute;
+          letter-spacing: .2em;
+          font-size: 0.6em;
+          top: 2em;
+          right: 2em;
+          font-weight: 800;
+        }
+
+        .logo_card { position: absolute; top: 6.8em; right: 2em; }
+        .chip_card { position: absolute; top: 2.3em; left: 2em; }
+        .contactless_card { position: absolute; top: 3.5em; right: 4.5em; }
+        .number_card { position: absolute; font-weight: bold; font-size: 1em; top: 6em; left: 1.6em; letter-spacing: 0.1em; font-family: 'Courier New', Courier, monospace; }
+        .valid_thru_card { position: absolute; font-weight: bold; top: 9.5em; font-size: 0.4em; left: 4.5em; color: rgba(255,255,255,0.5); }
+        .date_8264 { position: absolute; font-weight: bold; font-size: 0.7em; top: 10.5em; left: 2.5em; }
+        .name_card { position: absolute; font-weight: bold; font-size: 0.7em; top: 12.5em; left: 2.5em; text-transform: uppercase; }
+        .strip_card { position: absolute; background-color: black; width: 100%; height: 40px; top: 30px; background: repeating-linear-gradient(45deg, #303030, #303030 10px, #202020 10px, #202020 20px); }
+        .mstrip_card { position: absolute; background-color: rgb(255, 255, 255); width: 140px; height: 25px; top: 90px; left: 20px; border-radius: 4px; }
+        .sstrip_card { position: absolute; background-color: rgb(255, 255, 255); width: 60px; height: 25px; top: 90px; right: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+        .code_card { font-weight: bold; text-align: center; color: black; font-size: 0.8rem; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
+    "marked": "https://esm.sh/marked@^17.0.1",
+    "jspdf": "https://esm.sh/jspdf@^4.0.0",
+    "docx": "https://esm.sh/docx@^9.5.1",
+    "jszip": "https://esm.sh/jszip@^3.10.1",
+    "react-dom": "https://esm.sh/react-dom@^19.2.4"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

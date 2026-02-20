@@ -1,0 +1,39 @@
+{
+  "name": "Remix: InsPublish",
+  "short_name": "InsPublish",
+  "description": "專業、安全的跨平台寫作系統",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#1E293B",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3596/3596080.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "publishingPayload": {
+    "title": "Manuscript Title",
+    "subtitle": "Story Tagline",
+    "author": "Author Identity",
+    "shortDescription": "Quick overview for store listings (max 200 characters)",
+    "longDescription": "Detailed abstract, back cover copy, and synopsis",
+    "bisacCategories": [
+      "FIC000000"
+    ],
+    "languageCode": "zh-TW",
+    "regionCode": "TW",
+    "keywords": [],
+    "contentFormats": [
+      "epub",
+      "pdf",
+      "docx"
+    ]
+  }
+}
