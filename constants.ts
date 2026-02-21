@@ -11,8 +11,8 @@ export const COLORS = {
 
 // Precise match for the 22 colors in the user's screenshot (2 rows of 11)
 export const PROJECT_COLORS = [
-  '#9A8C35', '#AB522A', '#96AB48', '#B2A4FF', '#6A767A', '#7A6956', '#7D8260', '#8C5E5E', '#4D5E46', '#828A94',
-  '#8C8276', '#5E5452', '#4A5582', '#708259', '#9E8D82', '#465E6B', '#9482AB', '#8C7256', '#56697A', '#7A8C70'
+  '#6B632D', '#7A3E24', '#6B7A2D', '#B2A4FF', '#4A5552', '#5E5446', '#565E46', '#6B5252', '#3D4A3D', '#5E636B', '#3D4646',
+  '#5E5952', '#3D3838', '#383D5E', '#4A553D', '#6B5E59', '#303D46', '#63597A', '#5E5246', '#3D4652', '#525E4A', '#5E523D'
 ];
 
 export const PROJECT_ICONS = [

@@ -331,9 +331,18 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                  {/* 視覺編碼 (顏色選擇) */}
                  <div className="space-y-6">
                     <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">視覺編碼 VISUAL CODING</label>
-                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-x-3 gap-y-6 justify-items-center">
+                    <div className="grid grid-cols-5 sm:grid-cols-11 gap-x-3 gap-y-6 justify-items-center">
                        {PROJECT_COLORS.map(c => (
-                          <button key={c} onClick={() => setFormData({...formData, color: c})} className={`w-10 h-10 rounded-full transition-all relative ${formData.color === c ? 'ring-[4px] ring-white ring-offset-[4px] ring-offset-black scale-110 z-10' : 'opacity-60 hover:opacity-100'}`} style={{ backgroundColor: c }} />
+                          <button 
+                            key={c} 
+                            onClick={() => setFormData({...formData, color: c})} 
+                            className={`w-10 h-10 rounded-full transition-all relative ${
+                              formData.color === c 
+                                ? 'ring-[3px] ring-white ring-offset-[2px] ring-offset-black scale-110 z-10 shadow-[0_0_20px_rgba(255,255,255,0.4)]' 
+                                : 'opacity-60 hover:opacity-100'
+                            }`} 
+                            style={{ backgroundColor: c }} 
+                          />
                        ))}
                     </div>
                  </div>
