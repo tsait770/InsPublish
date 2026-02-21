@@ -295,7 +295,7 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
 
               <div className="flex-1 overflow-y-auto no-scrollbar px-8 sm:px-12 pt-8 sm:pt-10 pb-64 space-y-12">
                  {/* 基本資訊 */}
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div className="space-y-8">
                     <div className="space-y-4">
                        <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">資料夾名稱 FOLDER NAME</label>
                        <input autoFocus value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="例如：量子幽靈的小說..." className="w-full bg-[#1C1C1E] h-16 sm:h-20 px-8 rounded-[2rem] text-lg font-black text-white outline-none border border-white/5 focus:border-[#7b61ff] transition-all" />
@@ -304,9 +304,15 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                        <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">目標字數 TARGET WORDS</label>
                        <div className="grid grid-cols-4 gap-2">
                           {[3000, 5000, 10000, 50000].map(count => (
-                             <button key={count} onClick={() => setFormData({...formData, targetWordCount: count})} className={`h-10 rounded-xl text-[10px] font-black transition-all ${formData.targetWordCount === count ? 'bg-[#7b61ff] text-white' : 'bg-[#1C1C1E] text-gray-500 border border-white/5'}`}>{count >= 1000 ? `${count/1000}K` : count}</button>
+                             <button key={count} onClick={() => setFormData({...formData, targetWordCount: count})} className={`h-12 rounded-2xl text-[12px] font-black transition-all ${formData.targetWordCount === count ? 'bg-[#7b61ff] text-white' : 'bg-[#1C1C1E] text-gray-500 border border-white/5'}`}>{count >= 1000 ? `${count/1000}K` : count}</button>
                           ))}
                        </div>
+                       <input 
+                         type="number" 
+                         value={formData.targetWordCount} 
+                         onChange={e => setFormData({...formData, targetWordCount: Number(e.target.value)})} 
+                         className="w-full bg-[#1C1C1E] h-14 px-6 rounded-2xl text-lg font-black text-white outline-none border border-white/5 focus:border-[#7b61ff] transition-all mt-2" 
+                       />
                     </div>
                  </div>
 
@@ -318,14 +324,46 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                           const t = TEMPLATES[type];
                           const active = formData.type === type;
                           return (
-                            <button key={type} onClick={() => setFormData({...formData, type})} className={`flex flex-col items-start p-6 rounded-[2.5rem] border transition-all min-h-[180px] text-left relative group ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-lg scale-[1.02]' : 'bg-[#1C1C1E] border-white/5 text-gray-400'}`}>
-                               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${active ? 'bg-white/20' : 'bg-white/5'}`}><i className={`fa-solid ${t.icon} text-xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i></div>
-                               <span className={`text-sm font-black uppercase tracking-widest mb-2 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
-                               <p className={`text-[10px] font-medium line-clamp-2 ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.description}</p>
+                            <button key={type} onClick={() => setFormData({...formData, type})} className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left relative group ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-[0_0_40px_rgba(123,97,255,0.3)]' : 'bg-[#1C1C1E] border-white/5 text-gray-400'}`}>
+                               <div className={`w-14 h-14 rounded-[1.25rem] flex items-center justify-center mb-5 ${active ? 'bg-white/20' : 'bg-white/5'}`}><i className={`fa-solid ${t.icon} text-2xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i></div>
+                               <span className={`text-[17px] font-black tracking-widest mb-2 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
+                               <p className={`text-[12px] font-medium ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.description}</p>
                             </button>
                           );
                        })}
                     </div>
+                 </div>
+
+                 {/* 其他專業存檔 */}
+                 <div className="space-y-6 pt-6 border-t border-white/5">
+                    <div className="flex justify-between items-center px-1">
+                       <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest">其他專業存檔 SPECIALIZED ARCHIVES</label>
+                       <button 
+                         onClick={() => setIsTemplatesExpanded(!isTemplatesExpanded)}
+                         className="text-[10px] font-black text-[#7b61ff] uppercase tracking-widest flex items-center gap-2"
+                       >
+                         {isTemplatesExpanded ? '收起 COLLAPSE' : '瀏覽全部 VIEW ALL'}
+                         <i className={`fa-solid fa-chevron-${isTemplatesExpanded ? 'up' : 'down'}`}></i>
+                       </button>
+                    </div>
+                    
+                    {isTemplatesExpanded && (
+                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {scrollParadigms.map((type) => {
+                             const t = TEMPLATES[type];
+                             const active = formData.type === type;
+                             return (
+                               <button key={type} onClick={() => setFormData({...formData, type})} className={`flex items-center p-6 rounded-[2rem] border transition-all text-left ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-[0_0_40px_rgba(123,97,255,0.3)]' : 'bg-[#1C1C1E] border-white/5 text-gray-400'}`}>
+                                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mr-4 shrink-0 ${active ? 'bg-white/20' : 'bg-white/5'}`}><i className={`fa-solid ${t.icon} text-xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i></div>
+                                  <div>
+                                     <span className={`block text-[15px] font-black tracking-widest mb-1 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
+                                     <span className={`block text-[10px] font-black uppercase tracking-widest ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.enLabel}</span>
+                                  </div>
+                               </button>
+                             );
+                          })}
+                       </div>
+                    )}
                  </div>
 
                  {/* 視覺編碼 (顏色選擇) */}
@@ -338,7 +376,7 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                             onClick={() => setFormData({...formData, color: c})} 
                             className={`w-10 h-10 rounded-full transition-all relative ${
                               formData.color === c 
-                                ? 'ring-[3px] ring-white ring-offset-[2px] ring-offset-black scale-110 z-10 shadow-[0_0_20px_rgba(255,255,255,0.4)]' 
+                                ? 'ring-[3px] ring-white scale-110 z-10 shadow-[0_0_20px_rgba(255,255,255,0.4)]' 
                                 : 'opacity-60 hover:opacity-100'
                             }`} 
                             style={{ backgroundColor: c }} 

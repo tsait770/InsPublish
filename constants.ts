@@ -1,4 +1,3 @@
-
 import { WritingType, StructureType, StructureDefinition, SpineNodeId, SpineNodeStatus } from './types';
 
 export const COLORS = {
@@ -9,10 +8,12 @@ export const COLORS = {
   BG_NIGHT: '#0F172A',
 };
 
-// Precise match for the 22 colors in the user's screenshot (2 rows of 11)
+// Precise match for the core brand colors specified in the UI Contract
 export const PROJECT_COLORS = [
-  '#6B632D', '#7A3E24', '#6B7A2D', '#B2A4FF', '#4A5552', '#5E5446', '#565E46', '#6B5252', '#3D4A3D', '#5E636B', '#3D4646',
-  '#5E5952', '#3D3838', '#383D5E', '#4A553D', '#6B5E59', '#303D46', '#63597A', '#5E5246', '#3D4652', '#525E4A', '#5E523D'
+  '#FADE4B', // Sun Yellow
+  '#FF6B2C', // Vibrant Orange
+  '#D4FF5F', // Neon Green
+  '#B2A4FF'  // Dreamy Purple
 ];
 
 export const PROJECT_ICONS = [
