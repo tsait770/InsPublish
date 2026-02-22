@@ -10,10 +10,28 @@ export const COLORS = {
 
 // Precise match for the core brand colors specified in the UI Contract
 export const PROJECT_COLORS = [
-  '#FADE4B', // Sun Yellow
-  '#FF6B2C', // Vibrant Orange
-  '#D4FF5F', // Neon Green
-  '#B2A4FF'  // Dreamy Purple
+  '#635922', // Mustard
+  '#7B3A22', // Rust
+  '#5A6B22', // Olive
+  '#A89BFF', // Light Purple
+  '#4A5559', // Dark Gray
+  '#574A3D', // Brown
+  '#4A523A', // Dark Olive
+  '#5C3A3A', // Dark Red
+  '#3A453A', // Dark Green
+  '#4A525C', // Dark Blue/Gray
+  '#3A454A', // Dark Slate
+  '#524A45', // Dark Gray/Brown
+  '#454545', // Dark Gray
+  '#3A3A52', // Dark Blue
+  '#45523A', // Dark Olive 2
+  '#52453A', // Dark Brown
+  '#3A4A52', // Dark Slate/Blue
+  '#52455C', // Dark Purple
+  '#62554A', // Dark Brown 2
+  '#3A4552', // Dark Blue/Gray 2
+  '#455245', // Dark Green 2
+  '#5A4D3A'  // Dark Brown 3
 ];
 
 export const PROJECT_ICONS = [
