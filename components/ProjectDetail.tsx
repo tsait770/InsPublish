@@ -4,6 +4,7 @@ import { Project, Chapter, StructureType, SpineNodeId, SpineNodeStatus, CoverAss
 import { TEMPLATES, STRUCTURE_DEFINITIONS, SPINE_NODES_CONFIG, INITIAL_SPINE_NODES } from '../constants';
 import { geminiService } from '../services/geminiService';
 import CoverManagementModal from './CoverManagementModal';
+import ArtifactDownloader from './ArtifactDownloader';
 
 interface ProjectDetailProps {
   project: Project;
@@ -64,9 +65,26 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onOpenMo
   }, [isAddingChapter]);
 
   const handleSaveAssets = (assets: Record<CoverAssetType, CoverAsset>) => {
+    // 任務 1.2: 自動更新出版狀態閉環
+    const updatedSpine = {
+      ...(project.publishingSpine || {
+        currentNode: SpineNodeId.WRITING,
+        nodes: {} as any
+      }),
+    };
+    
+    // 確保 COVER_READY 狀態被標記為完成
+    if (!updatedSpine.nodes) updatedSpine.nodes = {} as any;
+    updatedSpine.nodes[SpineNodeId.COVER_READY] = {
+      id: SpineNodeId.COVER_READY,
+      isCompleted: true,
+      timestamp: Date.now()
+    };
+
     onUpdateProject({
       ...project,
       updatedAt: Date.now(),
+      publishingSpine: updatedSpine,
       publishingPayload: {
         ...(project.publishingPayload || {
           title: project.name,
@@ -389,6 +407,21 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onOpenMo
              )}
           </div>
         </section>
+
+        {/* Artifact Download Section - 任務三 */}
+        {hasAssets && (
+          <section className="w-full bg-[#1C1C1E] rounded-[44px] p-10 shadow-2xl relative overflow-hidden border border-white/5">
+            <div className="space-y-1.5 mb-8">
+              <h3 className="text-2xl font-black text-white tracking-tight">交付產物下載</h3>
+              <p className="text-[10px] text-[#8E8E93] font-black uppercase tracking-[0.2em]">ARTIFACT PACKAGING & EXPORT</p>
+            </div>
+            <ArtifactDownloader
+              project={project}
+              onDownloadStart={() => console.log('Download started')}
+              onDownloadComplete={() => console.log('Download completed')}
+            />
+          </section>
+        )}
 
         {/* Chapters Section - Optimized per Screenshots */}
         <section className="space-y-8 pt-8">

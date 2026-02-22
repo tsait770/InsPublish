@@ -4,6 +4,8 @@ import Cropper from 'react-easy-crop';
 import { X, Upload, Image as ImageIcon, CheckCircle, History, RotateCcw, Scissors, Check, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { Project, CoverAssetType, CoverAsset } from '../types';
 import { geminiService, COVER_SPECS } from '../services/geminiService';
+import TypographyLayer from './TypographyLayer';
+import SpineGenerator from './SpineGenerator';
 
 interface CoverManagementModalProps {
   project: Project;
@@ -18,9 +20,10 @@ const CoverManagementModal: React.FC<CoverManagementModalProps> = ({ project, on
   );
   
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'AI' | 'UPLOAD' | 'HISTORY' | 'PREFLIGHT'>('AI');
+  const [activeTab, setActiveTab] = useState<'AI' | 'UPLOAD' | 'HISTORY' | 'TYPOGRAPHY' | 'SPINE' | 'PREFLIGHT'>('AI');
   const [customPrompt, setCustomPrompt] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Cropper State
   const [pendingImage, setPendingImage] = useState<string | null>(null);
@@ -308,11 +311,13 @@ const CoverManagementModal: React.FC<CoverManagementModalProps> = ({ project, on
 
               {/* Controls Section */}
               <div className="space-y-10">
-                 <div className="flex bg-white/5 p-1.5 rounded-[2rem] border border-white/5">
-                    <button onClick={() => setActiveTab('AI')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all ${activeTab === 'AI' ? 'bg-white text-black' : 'text-gray-500'}`}>AI GENERATE</button>
-                    <button onClick={() => setActiveTab('UPLOAD')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all ${activeTab === 'UPLOAD' ? 'bg-white text-black' : 'text-gray-500'}`}>MANUAL UPLOAD</button>
-                    <button onClick={() => setActiveTab('HISTORY')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all ${activeTab === 'HISTORY' ? 'bg-white text-black' : 'text-gray-500'}`}>HISTORY</button>
-                    <button onClick={() => setActiveTab('PREFLIGHT')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all ${activeTab === 'PREFLIGHT' ? 'bg-white text-black' : 'text-gray-500'}`}>PREFLIGHT</button>
+                 <div className="flex bg-white/5 p-1.5 rounded-[2rem] border border-white/5 overflow-x-auto">
+                    <button onClick={() => setActiveTab('AI')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'AI' ? 'bg-white text-black' : 'text-gray-500'}`}>AI GENERATE</button>
+                    <button onClick={() => setActiveTab('UPLOAD')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'UPLOAD' ? 'bg-white text-black' : 'text-gray-500'}`}>MANUAL UPLOAD</button>
+                    <button onClick={() => setActiveTab('HISTORY')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'HISTORY' ? 'bg-white text-black' : 'text-gray-500'}`}>HISTORY</button>
+                    <button onClick={() => setActiveTab('TYPOGRAPHY')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'TYPOGRAPHY' ? 'bg-white text-black' : 'text-gray-500'}`}>TYPOGRAPHY</button>
+                    <button onClick={() => setActiveTab('SPINE')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'SPINE' ? 'bg-white text-black' : 'text-gray-500'}`}>SPINE</button>
+                    <button onClick={() => setActiveTab('PREFLIGHT')} className={`flex-1 py-4 rounded-[1.6rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === 'PREFLIGHT' ? 'bg-white text-black' : 'text-gray-500'}`}>PREFLIGHT</button>
                  </div>
 
                  {activeTab === 'AI' && (
@@ -357,6 +362,35 @@ const CoverManagementModal: React.FC<CoverManagementModalProps> = ({ project, on
                         </p>
                       </div>
                       <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileUpload} />
+                   </div>
+                 )}
+
+                 {activeTab === 'TYPOGRAPHY' && (
+                   <div className="space-y-8 animate-in fade-in duration-500">
+                      <div className="space-y-4">
+                         <h3 className="text-[13px] font-black text-white tracking-tight">Text Layout Preview</h3>
+                         <canvas
+                           ref={canvasRef}
+                           width={1600}
+                           height={2133}
+                           className="w-full max-h-[500px] bg-black rounded-[32px] border border-white/10"
+                         />
+                      </div>
+                      <TypographyLayer
+                        project={project}
+                        canvasRef={canvasRef}
+                        onLayoutChange={(layout) => console.log('Layout changed:', layout)}
+                        onFontChange={(font) => console.log('Font changed:', font)}
+                      />
+                   </div>
+                 )}
+
+                 {activeTab === 'SPINE' && (
+                   <div className="space-y-8 animate-in fade-in duration-500">
+                      <SpineGenerator
+                        project={project}
+                        onSpineGenerated={(spineData) => console.log('Spine generated:', spineData)}
+                      />
                    </div>
                  )}
 

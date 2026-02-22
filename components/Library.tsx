@@ -127,6 +127,37 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
     return a.isPinned ? -1 : 1;
   });
 
+  // Extract main color from image using AI or simple canvas if needed
+  const updateProjectColorFromImage = async (project: Project, imageUrl: string) => {
+    try {
+      // In a real app, we'd call geminiService. For now, we'll use a placeholder logic 
+      // that simulates the AI color extraction if the project doesn't have a color yet
+      // or if it's explicitly requested.
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = imageUrl;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        canvas.width = 1;
+        canvas.height = 1;
+        ctx.drawImage(img, 0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+        
+        if (project.color !== hex) {
+          const updatedProjects = projects.map(p => 
+            p.id === project.id ? { ...p, color: hex } : p
+          );
+          onUpdateProjects(updatedProjects);
+        }
+      };
+    } catch (e) {
+      console.error("Failed to extract color", e);
+    }
+  };
+
   const mainParadigms = [
     WritingType.NOVEL,
     WritingType.DIARY,
@@ -177,10 +208,12 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
           {sortedProjects.map((proj, idx) => {
             // Priority: Use actual project color, else cycle through core palette
             const displayColor = proj.color || coreBrandColors[idx % coreBrandColors.length];
+            const coverUrl = proj.publishingPayload?.coverAssets?.EBOOK_DIGITAL?.url;
+
             return (
               <div 
                 key={proj.id} 
-                className="stack-card animate-in fade-in slide-in-from-bottom-12 duration-700"
+                className="stack-card animate-in fade-in slide-in-from-bottom-12 duration-700 overflow-hidden"
                 style={{ 
                   zIndex: sortedProjects.length - idx,
                   backgroundColor: displayColor,
@@ -189,7 +222,15 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                 }}
                 onClick={() => onSelectProject(proj)}
               >
-                <div className="flex flex-col h-full relative">
+                {/* Background Cover with Glassmorphism Overlay */}
+                {coverUrl && (
+                  <div className="absolute inset-0 z-0">
+                    <img src={coverUrl} alt="" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 backdrop-blur-xl bg-black/30" />
+                  </div>
+                )}
+
+                <div className="flex flex-col h-full relative z-10" style={{ color: coverUrl ? 'white' : '#121212' }}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="max-w-[85%]">
                       <div className="flex flex-col space-y-1">
