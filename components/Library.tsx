@@ -18,19 +18,21 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [tempName, setTempName] = useState('');
 
-  // 核心品牌色系（預設循環使用）
+  // Core brand palette v1.1 for default cards
   const coreBrandColors = ['#FADE4B', '#FF6B2C', '#D4FF5F', '#B2A4FF'];
 
   const [formData, setFormData] = useState({
     name: '',
     type: WritingType.NOVEL,
     targetWordCount: 5000,
-    color: PROJECT_COLORS[3], 
+    color: PROJECT_COLORS[3], // Default to Lavender per screenshot
     icon: PROJECT_ICONS[0]
   });
 
   useEffect(() => {
-    const handleGlobalClick = () => setActiveMenuId(null);
+    const handleGlobalClick = () => {
+      setActiveMenuId(null);
+    };
     window.addEventListener('click', handleGlobalClick);
     return () => window.removeEventListener('click', handleGlobalClick);
   }, []);
@@ -125,12 +127,18 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
     return a.isPinned ? -1 : 1;
   });
 
-  const mainParadigms = [WritingType.NOVEL, WritingType.DIARY, WritingType.BLOG, WritingType.CUSTOM];
+  const mainParadigms = [
+    WritingType.NOVEL,
+    WritingType.DIARY,
+    WritingType.BLOG,
+    WritingType.CUSTOM
+  ];
+
   const scrollParadigms = (Object.keys(TEMPLATES) as WritingType[]).filter(t => !mainParadigms.includes(t));
 
   return (
     <div className="px-4 sm:px-8 space-y-8 sm:space-y-12 pb-48 max-w-7xl mx-auto">
-      {/* 天氣看板區塊 */}
+      {/* Weather Header Section */}
       <section>
         <div className="weather-card animate-in fade-in zoom-in duration-700">
           <div className="weather-container">
@@ -149,7 +157,7 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
         </div>
       </section>
 
-      {/* 書架主體區塊 */}
+      {/* Main Repository Section */}
       <section>
         <div className="flex items-center justify-between mb-10">
           <div className="flex flex-col">
@@ -164,9 +172,10 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
           </button>
         </div>
         
-        {/* 堆疊式卡片容器 */}
+        {/* Balanced Vertical Arrangement Stack */}
         <div className="stack-container relative">
           {sortedProjects.map((proj, idx) => {
+            // Priority: Use actual project color, else cycle through core palette
             const displayColor = proj.color || coreBrandColors[idx % coreBrandColors.length];
             return (
               <div 
@@ -200,7 +209,7 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                         ) : (
                           <h3 
                             onClick={(e) => handleStartInlineEdit(e, proj)}
-                            className="text-[32px] sm:text-[38px] font-black tracking-tighter leading-[1.1] line-clamp-2 cursor-text"
+                            className="text-[32px] sm:text-[38px] font-black tracking-tighter leading-[1.1] truncate cursor-text"
                           >
                             {proj.name}
                           </h3>
@@ -215,7 +224,6 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                       </div>
                     </div>
                     
-                    {/* 卡片選單 */}
                     <div className="relative">
                       <button 
                         onClick={(e) => {
@@ -228,17 +236,29 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                       </button>
 
                       {activeMenuId === proj.id && (
-                        <div className="absolute right-0 top-14 w-52 bg-[#1C1C1E] border border-white/10 rounded-[28px] shadow-3xl z-[200] p-1.5 animate-in fade-in zoom-in duration-300" onClick={(e) => e.stopPropagation()}>
-                          <button onClick={(e) => handleTogglePin(e, proj)} className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors">
+                        <div 
+                          className="absolute right-0 top-14 w-52 bg-[#1C1C1E] border border-white/10 rounded-[28px] shadow-3xl z-[200] p-1.5 animate-in fade-in zoom-in duration-300"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button 
+                            onClick={(e) => handleTogglePin(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors"
+                          >
                             <i className={`fa-solid ${proj.isPinned ? 'fa-thumbtack text-[#D4FF5F]' : 'fa-thumbtack text-gray-400'}`}></i>
                             <span className="text-[12px] font-black text-white uppercase tracking-widest">{proj.isPinned ? '取消置頂' : '置頂專案'}</span>
                           </button>
-                          <button onClick={(e) => handleStartInlineEdit(e, proj)} className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors">
-                            <i className="fa-solid fa-pen-to-square text-blue-500 text-lg"></i>
-                            <span className="text-[13px] font-bold text-white tracking-tight">編輯名稱</span>
+                          <button 
+                            onClick={(e) => handleStartInlineEdit(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left transition-colors"
+                          >
+                            <i className="fa-solid fa-pen-to-square text-blue-400"></i>
+                            <span className="text-[12px] font-black text-white uppercase tracking-widest">編輯名稱</span>
                           </button>
                           <div className="h-px bg-white/5 my-1.5 mx-2"></div>
-                          <button onClick={(e) => handleDelete(e, proj)} className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-red-500/10 text-left transition-colors">
+                          <button 
+                            onClick={(e) => handleDelete(e, proj)}
+                            className="w-full flex items-center space-x-4 px-5 py-4 rounded-2xl hover:bg-red-500/10 text-left transition-colors"
+                          >
                             <i className="fa-solid fa-trash-can text-red-500"></i>
                             <span className="text-[12px] font-black text-red-500 uppercase tracking-widest">刪除專案</span>
                           </button>
@@ -248,27 +268,17 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
                   </div>
                   
                   <div className="mt-auto pb-6">
-                    {/* 資訊標籤欄：包含時間戳與百分比數值 */}
                     <div className="flex justify-between items-end mb-4">
-                      {/* 左側：最後編輯時間 (Metadata) */}
                       <div className="text-[12px] font-black uppercase tracking-[0.3em] opacity-40 flex items-center">
                         <i className="fa-regular fa-clock mr-2.5"></i>
                         {proj.metadata || 'JUST NOW'}
                       </div>
-                      
-                      {/* 右側：進度百分比數字 */}
                       <div className="text-[12px] font-black tracking-tight opacity-50">
                         {proj.progress}%
                       </div>
                     </div>
-
-                    {/* 進度條本體 */}
                     <div className="progress-bar-container bg-black/5">
-                      {/* 動態填充層：寬度由 proj.progress 決定 */}
-                      <div 
-                        className="progress-fill bg-black/25" 
-                        style={{ width: `${proj.progress}%` }} 
-                      />
+                      <div className="progress-fill bg-black/25" style={{ width: `${proj.progress}%` }} />
                     </div>
                   </div>
                 </div>
@@ -278,11 +288,14 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
         </div>
       </section>
 
-      {/* 建立專案 Modal (Creation Protocol) */}
+      {/* Modern Creation Protocol UI - Optimized RWD for Mobile, Tablet, Web */}
       {isCreating && (
         <div className="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center animate-in fade-in duration-500">
+           {/* Deep dark blurry mask to fix "overlapping UI" complaint - Apple HIG style */}
            <div className="absolute inset-0 bg-black/95 backdrop-blur-[40px]" onClick={resetForm} />
-           <div className="relative w-full max-w-full sm:max-w-2xl lg:max-w-3xl bg-[#0F0F10] rounded-t-[44px] sm:rounded-[44px] p-0 flex flex-col animate-in slide-in-from-bottom duration-700 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,1)] border border-white/5 h-[94vh] sm:h-auto sm:max-h-[90vh]">
+           
+           <div className="relative w-full max-w-full sm:max-w-2xl lg:max-w-3xl bg-[#0F0F10] rounded-t-[44px] sm:rounded-[44px] p-0 flex flex-col animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in duration-700 cubic-bezier(0.16, 1, 0.3, 1) overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,1)] border border-white/5 h-[94vh] sm:h-auto sm:max-h-[90vh]">
+              
               <header className="px-8 sm:px-12 py-8 sm:py-10 border-b border-white/5 shrink-0 flex justify-between items-start bg-[#0F0F10] z-20">
                  <div className="space-y-1">
                     <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tighter">啟動寫作倉庫</h2>
@@ -294,101 +307,135 @@ const Library: React.FC<LibraryProps> = ({ projects, onSelectProject, onCreatePr
               </header>
 
               <div className="flex-1 overflow-y-auto no-scrollbar px-8 sm:px-12 pt-8 sm:pt-10 pb-64 space-y-12">
-                 {/* 基本資訊 */}
-                 <div className="space-y-8">
+                 
+                 {/* Basic Info Section - Responsive Grid */}
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
                     <div className="space-y-4">
                        <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">資料夾名稱 FOLDER NAME</label>
-                       <input autoFocus value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="例如：量子幽靈的小說..." className="w-full bg-[#1C1C1E] h-16 sm:h-20 px-8 rounded-[2rem] text-lg font-black text-white outline-none border border-white/5 focus:border-[#7b61ff] transition-all" />
+                       <input 
+                         autoFocus
+                         value={formData.name} 
+                         onChange={e => setFormData({...formData, name: e.target.value})} 
+                         placeholder="例如：量子幽靈的小說..." 
+                         className="w-full bg-[#1C1C1E] h-16 sm:h-20 px-8 rounded-[2rem] sm:rounded-[2.5rem] text-lg sm:text-xl font-black text-white outline-none border border-white/5 focus:border-[#7b61ff] transition-all placeholder-white/5" 
+                       />
                     </div>
+
                     <div className="space-y-4">
                        <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">目標字數 TARGET WORDS</label>
                        <div className="grid grid-cols-4 gap-2">
                           {[3000, 5000, 10000, 50000].map(count => (
-                             <button key={count} onClick={() => setFormData({...formData, targetWordCount: count})} className={`h-12 rounded-2xl text-[12px] font-black transition-all ${formData.targetWordCount === count ? 'bg-[#7b61ff] text-white' : 'bg-[#1C1C1E] text-gray-500 border border-white/5'}`}>{count >= 1000 ? `${count/1000}K` : count}</button>
+                             <button 
+                                key={count} 
+                                onClick={() => setFormData({...formData, targetWordCount: count})}
+                                className={`h-10 sm:h-12 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black transition-all ${formData.targetWordCount === count ? 'bg-[#7b61ff] text-white shadow-lg' : 'bg-[#1C1C1E] text-gray-500 border border-white/5 hover:bg-white/5'}`}
+                             >
+                                {count >= 1000 ? `${count/1000}K` : count}
+                             </button>
                           ))}
                        </div>
-                       <input 
-                         type="number" 
-                         value={formData.targetWordCount} 
-                         onChange={e => setFormData({...formData, targetWordCount: Number(e.target.value)})} 
-                         className="w-full bg-[#1C1C1E] h-14 px-6 rounded-2xl text-lg font-black text-white outline-none border border-white/5 focus:border-[#7b61ff] transition-all mt-2" 
-                       />
+                       <div className="w-full bg-[#1C1C1E] h-12 sm:h-14 px-8 rounded-xl sm:rounded-2xl border border-white/5 flex items-center mt-2">
+                          <input 
+                             type="number" 
+                             value={formData.targetWordCount} 
+                             onChange={e => setFormData({...formData, targetWordCount: parseInt(e.target.value) || 0})}
+                             className="w-full bg-transparent text-lg font-black text-white outline-none"
+                          />
+                       </div>
                     </div>
                  </div>
 
-                 {/* 寫作範式 */}
+                 {/* Core Paradigms - Adaptive Layout */}
                  <div className="space-y-6">
                     <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">寫作範式 CORE PARADIGMS</label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                        {mainParadigms.map((type) => {
                           const t = TEMPLATES[type];
                           const active = formData.type === type;
                           return (
-                            <button key={type} onClick={() => setFormData({...formData, type})} className={`flex flex-col items-start p-8 rounded-[2.5rem] border transition-all text-left relative group ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-[0_0_40px_rgba(123,97,255,0.3)]' : 'bg-[#1C1C1E] border-white/5 text-gray-400'}`}>
-                               <div className={`w-14 h-14 rounded-[1.25rem] flex items-center justify-center mb-5 ${active ? 'bg-white/20' : 'bg-white/5'}`}><i className={`fa-solid ${t.icon} text-2xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i></div>
-                               <span className={`text-[17px] font-black tracking-widest mb-2 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
-                               <p className={`text-[12px] font-medium ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.description}</p>
+                            <button 
+                              key={type} 
+                              onClick={() => setFormData({...formData, type})} 
+                              className={`flex flex-col items-start p-6 sm:p-8 rounded-[2.5rem] sm:rounded-[3rem] border transition-all min-h-[180px] sm:min-h-[220px] text-left relative group ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-[0_20px_50px_rgba(123,97,255,0.4)] scale-[1.02]' : 'bg-[#1C1C1E] border-white/5 text-gray-400 hover:border-white/10'}`}
+                            >
+                               <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 transition-transform group-hover:scale-110 ${active ? 'bg-white/20' : 'bg-white/5'}`}>
+                                  <i className={`fa-solid ${t.icon} text-xl sm:text-2xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i>
+                               </div>
+                               <span className={`text-sm sm:text-[16px] font-black uppercase tracking-widest leading-none mb-2 sm:mb-3 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
+                               <p className={`text-[10px] sm:text-[11px] font-medium line-clamp-2 sm:line-clamp-3 leading-relaxed ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.description}</p>
                             </button>
                           );
                        })}
                     </div>
                  </div>
 
-                 {/* 其他專業存檔 */}
-                 <div className="space-y-6 pt-6 border-t border-white/5">
-                    <div className="flex justify-between items-center px-1">
+                 <div className="space-y-6">
+                    <div className="flex items-center justify-between px-1">
                        <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest">其他專業存檔 SPECIALIZED ARCHIVES</label>
-                       <button 
-                         onClick={() => setIsTemplatesExpanded(!isTemplatesExpanded)}
-                         className="text-[10px] font-black text-[#7b61ff] uppercase tracking-widest flex items-center gap-2"
-                       >
-                         {isTemplatesExpanded ? '收起 COLLAPSE' : '瀏覽全部 VIEW ALL'}
-                         <i className={`fa-solid fa-chevron-${isTemplatesExpanded ? 'up' : 'down'}`}></i>
+                       <button onClick={() => setIsTemplatesExpanded(!isTemplatesExpanded)} className="text-[10px] font-black text-[#7b61ff] uppercase tracking-[0.2em] flex items-center gap-2">
+                          {isTemplatesExpanded ? '收起 COLLAPSE' : '瀏覽全部 VIEW ALL'}
+                          <i className={`fa-solid fa-chevron-${isTemplatesExpanded ? 'up' : 'down'}`}></i>
                        </button>
                     </div>
-                    
-                    {isTemplatesExpanded && (
-                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {scrollParadigms.map((type) => {
-                             const t = TEMPLATES[type];
-                             const active = formData.type === type;
-                             return (
-                               <button key={type} onClick={() => setFormData({...formData, type})} className={`flex items-center p-6 rounded-[2rem] border transition-all text-left ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-[0_0_40px_rgba(123,97,255,0.3)]' : 'bg-[#1C1C1E] border-white/5 text-gray-400'}`}>
-                                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mr-4 shrink-0 ${active ? 'bg-white/20' : 'bg-white/5'}`}><i className={`fa-solid ${t.icon} text-xl`} style={{ color: active ? 'white' : '#7b61ff' }}></i></div>
-                                  <div>
-                                     <span className={`block text-[15px] font-black tracking-widest mb-1 ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</span>
-                                     <span className={`block text-[10px] font-black uppercase tracking-widest ${active ? 'text-white/80' : 'text-gray-500'}`}>{t.enLabel}</span>
-                                  </div>
-                               </button>
-                             );
-                          })}
-                       </div>
-                    )}
+
+                    <div className={`grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 transition-all duration-700 ${isTemplatesExpanded ? 'opacity-100 max-h-[1200px] visible mt-4' : 'opacity-0 max-h-0 invisible overflow-hidden'}`}>
+                       {scrollParadigms.map(type => {
+                          const t = TEMPLATES[type];
+                          const active = formData.type === type;
+                          return (
+                             <button 
+                                key={type} 
+                                onClick={() => setFormData({...formData, type})}
+                                className={`flex items-center justify-between p-5 sm:p-6 rounded-[2rem] sm:rounded-[2.5rem] border transition-all ${active ? 'bg-[#7b61ff] border-[#7b61ff] text-white shadow-lg' : 'bg-[#1C1C1E] border-white/5 text-gray-500 hover:border-white/10'}`}
+                             >
+                                <div className="flex items-center space-x-4 sm:space-x-5 text-left">
+                                   <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center ${active ? 'bg-white/20' : 'bg-white/5'}`}>
+                                      <i className={`fa-solid ${t.icon} text-base sm:text-lg`} style={{ color: active ? 'white' : '#7b61ff' }}></i>
+                                   </div>
+                                   <div>
+                                      <h4 className={`text-xs sm:text-[13px] font-black uppercase tracking-widest leading-none ${active ? 'text-white' : 'text-slate-200'}`}>{t.label}</h4>
+                                      <p className="text-[8px] sm:text-[9px] font-bold opacity-40 mt-1">{t.enLabel}</p>
+                                   </div>
+                                </div>
+                                {active && <i className="fa-solid fa-circle-check text-white text-xs"></i>}
+                             </button>
+                          );
+                       })}
+                    </div>
                  </div>
 
-                 {/* 視覺編碼 (顏色選擇) */}
+                 {/* Visual Coding Section - Refined Responsive Grid */}
                  <div className="space-y-6">
                     <label className="text-[11px] font-black text-gray-600 uppercase tracking-widest px-1">視覺編碼 VISUAL CODING</label>
-                    <div className="grid grid-cols-5 sm:grid-cols-11 gap-x-3 gap-y-6 justify-items-center">
+                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-8 justify-items-center sm:justify-items-start">
                        {PROJECT_COLORS.map(c => (
                           <button 
                             key={c} 
                             onClick={() => setFormData({...formData, color: c})} 
-                            className={`w-10 h-10 rounded-full transition-all relative ${
+                            className={`w-10 h-10 sm:w-11 sm:w-12 sm:h-12 rounded-full transition-all duration-300 flex items-center justify-center relative active:scale-90 ${
                               formData.color === c 
-                                ? 'ring-[3px] ring-white scale-110 z-10 shadow-[0_0_20px_rgba(255,255,255,0.4)]' 
-                                : 'opacity-60 hover:opacity-100'
+                                ? 'ring-[4px] sm:ring-[5px] ring-white ring-offset-[4px] sm:ring-offset-[5px] ring-offset-black scale-110 z-10 shadow-[0_0_30px_rgba(255,255,255,0.3)]' 
+                                : 'opacity-60 hover:opacity-100 hover:scale-105'
                             }`} 
-                            style={{ backgroundColor: c }} 
+                            style={{ backgroundColor: c }}
                           />
                        ))}
                     </div>
                  </div>
+                 
+                 {/* Layout Bottom Padding to ensure Visual Coding is never hidden by fixed footer */}
+                 <div className="h-32" />
               </div>
 
-              {/* 底部按鈕 */}
-              <div className="absolute bottom-0 inset-x-0 p-8 sm:p-12 bg-gradient-to-t from-[#0F0F10] via-[#0F0F10] to-transparent z-30">
-                 <button onClick={handleCreate} disabled={!formData.name.trim()} className={`w-full h-16 sm:h-24 rounded-[2rem] sm:rounded-[3rem] text-white font-black text-[12px] sm:text-[15px] uppercase tracking-[0.4em] shadow-2xl transition-all ${!formData.name.trim() ? 'bg-gray-800 opacity-40' : 'bg-blue-600 shadow-[0_25px_60px_rgba(37,99,235,0.4)]'}`}>啟 動 寫 作 存 檔 PROTOCOL</button>
+              {/* Fixed Bottom Action Area - Depth Optimized */}
+              <div className="absolute bottom-0 inset-x-0 p-8 sm:p-12 bg-gradient-to-t from-[#0F0F10] via-[#0F0F10] to-transparent shrink-0 z-30">
+                 <button 
+                    onClick={handleCreate} 
+                    disabled={!formData.name.trim()} 
+                    className={`w-full h-16 sm:h-24 rounded-[2rem] sm:rounded-[3rem] text-white font-black text-[12px] sm:text-[15px] uppercase tracking-[0.4em] sm:tracking-[0.5em] shadow-2xl transition-all active:scale-[0.97] hover:scale-[1.01] ${!formData.name.trim() ? 'bg-gray-800 opacity-40 cursor-not-allowed' : 'bg-blue-600 shadow-[0_25px_60px_rgba(37,99,235,0.4)] hover:brightness-110'}`}
+                 >
+                    啟 動 寫 作 存 檔 PROTOCOL
+                 </button>
               </div>
            </div>
         </div>
